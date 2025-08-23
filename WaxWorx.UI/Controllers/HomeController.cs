@@ -53,6 +53,26 @@ namespace WaxWorx.Controllers
             return Ok("TEST");
         }
 
+        public IActionResult TestCoverArtApi()
+        {
+            // The Dark Side of the Moon by Pink Floyd
+            var mbid = "1973d7b6-9e7b-4cde-8a3c-0c3f4c3f4d3e";
+
+            var data = _coverArtApiClient.TestAsync(mbid);
+
+            return Ok("TEST");
+        }
+
+        public IActionResult TestMusicBrainzApi()
+        {
+            // The Dark Side of the Moon by Pink Floyd
+            var mbid = "1973d7b6-9e7b-4cde-8a3c-0c3f4c3f4d3e";
+
+            var data = _musicBrainzApiClient.TestAsync(mbid);
+
+            return Ok("TEST");
+        }
+
         // Artist Endpoints
 
         public IActionResult ViewAlbums()

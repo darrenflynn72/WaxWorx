@@ -27,9 +27,8 @@ namespace WaxWorx.CoverArtApi
         {
             // build target endpoint url from settings
             var baseUrl = _config.BaseUrl;
-            var apiKey = _config.ApiKey;
-            var accessToken = _config.AccessToken;
-            var endpointUrl = $"{baseUrl}/release/{mbid}&token={apiKey}";
+
+            var endpointUrl = $"{baseUrl}/release/{mbid}/front";
 
             try
             {
@@ -44,12 +43,15 @@ namespace WaxWorx.CoverArtApi
 
         public async Task<string?> GetAlbumCoverUrlAsync(string mbid)
         {
-            var url = $"https://coverartarchive.org/release/{mbid}/front";
+            // build target endpoint url from settings
+            var baseUrl = _config.BaseUrl;
+
+            var endpointUrl = $"{baseUrl}/release/{mbid}/front";
 
             try
             {
-                var response = await _httpClient.GetAsync(url);
-                return response.IsSuccessStatusCode ? url : null;
+                var response = await _httpClient.GetAsync(endpointUrl);
+                return response.IsSuccessStatusCode ? endpointUrl : null;
             }
             catch (Exception ex)
             {

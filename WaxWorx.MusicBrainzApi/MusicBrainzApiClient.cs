@@ -28,9 +28,8 @@ namespace WaxWorx.MusicBrainzApi
         {
             // build target endpoint url from settings
             var baseUrl = _config.BaseUrl;
-            var apiKey = _config.ApiKey;
-            var accessToken = _config.AccessToken;
-            var endpointUrl = $"{baseUrl}/ws/2/release/{mbid}&token={apiKey}";
+
+            var endpointUrl = $"{baseUrl}/release/{mbid}";
 
             try
             {
@@ -45,11 +44,14 @@ namespace WaxWorx.MusicBrainzApi
 
         public async Task<string> GetAlbumInfoAsync(string mbid)
         {
-            var url = $"https://musicbrainz.org/ws/2/release/{mbid}?fmt=json";
+            // build target endpoint url from settings
+            var baseUrl = _config.BaseUrl;
+
+            var endpointUrl = $"{baseUrl}/release/{mbid}?fmt=json";
 
             try
             {
-                return await _httpClient.GetStringAsync(url);
+                return await _httpClient.GetStringAsync(endpointUrl);
             }
             catch (Exception ex)
             {
@@ -60,13 +62,21 @@ namespace WaxWorx.MusicBrainzApi
 
         public async Task<string?> GetMBIDAsync(string albumTitle, string artistName)
         {
+            // build target endpoint url from settings
+            var baseUrl = _config.BaseUrl;
+
+            //var endpointUrl = $"{baseUrl}/release/{mbid}";
+
+            // Construct the query URL
+            var endpointUrl = $"{baseUrl}/release/?query=release:{Uri.EscapeDataString(albumTitle)}%20artist:{Uri.EscapeDataString(artistName)}&fmt=json";
+
             try
             {
                 // Construct the query URL
-                var query = $"https://musicbrainz.org/ws/2/release/?query=release:{Uri.EscapeDataString(albumTitle)}%20artist:{Uri.EscapeDataString(artistName)}&fmt=json";
-
+                //var query = $"https://musicbrainz.org/ws/2/release/?query=release:{Uri.EscapeDataString(albumTitle)}%20artist:{Uri.EscapeDataString(artistName)}&fmt=json";
+                
                 // Make the API call
-                var response = await _httpClient.GetAsync(query);
+                var response = await _httpClient.GetAsync(endpointUrl);
 
                 // Check if the response was successful
                 if (!response.IsSuccessStatusCode)
