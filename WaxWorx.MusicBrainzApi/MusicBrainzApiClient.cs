@@ -17,6 +17,7 @@ namespace WaxWorx.MusicBrainzApi
         private readonly HttpClient _httpClient;
         private readonly ILogger<MusicBrainzApiClient> _logger;
         private readonly MusicBrainzApiConfig _config;
+
         public MusicBrainzApiClient(HttpClient httpClient, ILogger<MusicBrainzApiClient> logger, IOptions<MusicBrainzApiConfig> configMusicBrainzApi)
         {
             _httpClient = httpClient;
@@ -24,41 +25,6 @@ namespace WaxWorx.MusicBrainzApi
             _logger = logger;
             _config = configMusicBrainzApi.Value;
         }
-
-        //public async Task<ReleaseDetailDto> TestAsync(string mbid)
-        //{
-        //    var baseUrl = _config.BaseUrl.TrimEnd('/');
-        //    //var endpointUrl = $"{baseUrl}/release/{mbid}?inc=artist-credits&fmt=json"; // include artist
-
-        //    var endpointUrl = $"{baseUrl}/release/{mbid}?inc=artist-credits+media+recordings+release-groups+labels+genres&fmt=json";
-
-        //    _httpClient.DefaultRequestHeaders.UserAgent.ParseAdd("WaxWorx/1.0.0 ( https://waxworx.com )");
-
-        //    try
-        //    {
-        //        var response = await _httpClient.GetAsync(endpointUrl);
-
-        //        if (!response.IsSuccessStatusCode)
-        //        {
-        //            _logger.LogWarning("MusicBrainz returned {StatusCode} for release {mbid}", response.StatusCode, mbid);
-        //            return null;
-        //        }
-
-        //        var stream = await response.Content.ReadAsStreamAsync();
-
-        //        var release = await JsonSerializer.DeserializeAsync<ReleaseDetailDto>(stream, new JsonSerializerOptions
-        //        {
-        //            PropertyNameCaseInsensitive = true
-        //        });
-
-        //        return release;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError(ex, "Error fetching release for {mbid}", mbid);
-        //        return null;
-        //    }
-        //}
 
         public async Task<ReleaseDetailDto> TestAsync(string mbid)
         {
@@ -179,46 +145,5 @@ namespace WaxWorx.MusicBrainzApi
                 return null;
             }
         }
-
-        //public async Task<string?> GetMBIDAsync(string albumTitle, string artistName)
-        //{
-        //    // build target endpoint url from settings
-        //    var baseUrl = _config.BaseUrl;
-
-        //    //var endpointUrl = $"{baseUrl}/release/{mbid}";
-
-        //    // Construct the query URL
-        //    var endpointUrl = $"{baseUrl}/release/?query=release:{Uri.EscapeDataString(albumTitle)}%20artist:{Uri.EscapeDataString(artistName)}&fmt=json";
-
-        //    try
-        //    {
-        //        // Construct the query URL
-        //        //var query = $"https://musicbrainz.org/ws/2/release/?query=release:{Uri.EscapeDataString(albumTitle)}%20artist:{Uri.EscapeDataString(artistName)}&fmt=json";
-
-        //        // Make the API call
-        //        var response = await _httpClient.GetAsync(endpointUrl);
-
-        //        // Check if the response was successful
-        //        if (!response.IsSuccessStatusCode)
-        //        {
-        //            Console.WriteLine($"Error: {response.StatusCode} - {response.ReasonPhrase}");
-        //            return null;
-        //        }
-
-        //        var content = await response.Content.ReadAsStringAsync();
-
-        //        // Parse the JSON response to find the MBID
-        //        var json = JObject.Parse(content);
-        //        var release = json["releases"]?.FirstOrDefault();
-        //        var mbid = release?["id"]?.ToString();
-
-        //        return mbid; // Return the MBID, or null if not found
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.LogError(ex, "Error fetching MBID for {albumTitle} {artistName}", albumTitle, artistName);
-        //        return null;
-        //    }
-        //}
     }
 }

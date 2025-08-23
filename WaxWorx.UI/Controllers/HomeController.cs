@@ -58,7 +58,14 @@ namespace WaxWorx.Controllers
             // Release: Thriller by Michael Jackson
             var mbid = "61bf0388-b8a9-48f4-81d1-7eb02706dfb0";
 
-            var data = await _coverArtApiClient.TestAsync(mbid);
+            //var data = await _coverArtApiClient.TestAsync(mbid);
+
+            // Get CDN Image path
+            var data = await _coverArtApiClient.GetFrontCoverArtUrlAsync(mbid);
+
+            // Get Image byte array
+            //var data = await _coverArtApiClient.GetFrontCoverArtAsync(mbid);
+
 
             return Ok("TEST");
         }
