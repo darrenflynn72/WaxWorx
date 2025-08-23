@@ -40,8 +40,6 @@ namespace WaxWorx.Controllers
         // Main page with options
         public IActionResult Index()
         {
-            //ViewData["Title"] = "Dashboard";
-
             var tempView = new VinylDashboardViewModel
             {
                 RecentAlbums = new List<AlbumSummary>() // Safe default

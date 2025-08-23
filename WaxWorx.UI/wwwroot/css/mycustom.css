@@ -124,3 +124,50 @@ header nav.compact-header > .container-fluid {
     .dark-header .navbar-toggler-icon {
         background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(23,162,184, 0.7)' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
     }
+
+/* DASHBOARD SUMAMRY CARDS */
+.summary-card {
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    transition: box-shadow 0.2s ease-in-out;
+}
+
+    .summary-card:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    }
+
+.summary-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* DASHBOARD SUMAMRY CARD TEXT */
+
+.text-accent-orange {
+    color: #FFA726;  warm orange 
+}
+
+.text-accent-blue {
+    color: #29B6F6;  light blue 
+}
+
+.text-accent-red {
+    color: #EF5350;  soft red 
+}
+
+.text-accent-green {
+    color: #66BB6A;  fresh green 
+}
+
+.summary-card {
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    transition: box-shadow 0.2s ease-in-out;
+}
+
+    .summary-card:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    }
