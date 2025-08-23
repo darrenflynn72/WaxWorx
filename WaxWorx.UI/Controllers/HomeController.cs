@@ -40,10 +40,14 @@ namespace WaxWorx.Controllers
         // Main page with options
         public IActionResult Index()
         {
-            // Setting ViewData["Title"]
-            ViewData["Title"] = "Vinyl Vault Page";
+            //ViewData["Title"] = "Dashboard";
 
-            return View();
+            var tempView = new VinylDashboardViewModel
+            {
+                RecentAlbums = new List<AlbumSummary>() // Safe default
+            };
+
+            return View(tempView); 
         }
 
         public IActionResult Test()

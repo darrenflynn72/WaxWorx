@@ -1,0 +1,106 @@
+﻿/* Root Theme Variables */
+:root {
+    --bg-dark: #121212;
+    --text-light: #f0f0f0;
+    --accent-info: #17a2b8;
+    --accent-success: #28a745;
+    --accent-danger: #dc3545;
+    --accent-secondary: #6c757d;
+}
+
+/* Body and Container */
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/*.container-fluid {
+    padding: 2rem;
+}*/
+
+/* Use this: */
+main .container-fluid {
+    padding: 2rem;
+}
+
+
+/* Headings */
+h2, h4 {
+    text-transform: uppercase;
+    color: var(--accent-info);
+    letter-spacing: 0.5px;
+}
+
+/* Cards */
+.card {
+    border: none;
+    border-radius: 0.25rem;
+    box-shadow: 0 0 5px rgba(0,0,0,0.3);
+}
+
+    .card.bg-secondary {
+        background-color: var(--accent-secondary);
+    }
+
+    .card.bg-info {
+        background-color: var(--accent-info);
+    }
+
+    .card.bg-danger {
+        background-color: var(--accent-danger);
+    }
+
+    .card.bg-success {
+        background-color: var(--accent-success);
+    }
+
+.card-body h5 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.card-body h3 {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+/* Recently Added List */
+.list-group-item {
+    border: none;
+    padding: 0.75rem 1rem;
+    transition: background-color 0.2s ease-in-out;
+}
+
+    .list-group-item:hover {
+        background-color: #1f1f1f;
+    }
+
+.img-thumbnail {
+    border: none;
+    object-fit: cover;
+}
+
+/* Chart Canvas */
+canvas#genreChart {
+    background-color: #1a1a1a;
+    border-radius: 0.25rem;
+    padding: 1rem;
+}
+
+/* Responsive Tweaks */
+@media (max-width: 768px) {
+    .card-body h3 {
+        font-size: 1.5rem;
+    }
+
+    .list-group-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .img-thumbnail {
+        margin-bottom: 0.5rem;
+    }
+}

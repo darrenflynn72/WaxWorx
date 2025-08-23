@@ -1,8 +1,94 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model WaxWorx.UI.ViewModels.VinylDashboardViewModel
+
+@{
+    ViewData["Title"] = "Dashboard";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container-fluid bg-dark text-light py-4">
+    <h2 class="mb-4 text-uppercase text-secondary">Vinyl Record Collection</h2>
+
+    <!-- Summary Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-secondary text-white">
+                <div class="card-body">
+                    <h5>Total Records</h5>
+                    <h3>@Model.TotalRecords</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <h5>Artists</h5>
+                    <h3>@Model.TotalArtists</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-danger text-white">
+                <div class="card-body">
+                    <h5>Genres</h5>
+                    <h3>@Model.TotalGenres</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h5>Condition</h5>
+                    <h3>@Model.ConditionScore %</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Collection Stats -->
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h4 class="text-info">Collection Stats</h4>
+            <canvas id="genreChart" height="200"></canvas>
+        </div>
+
+        <!-- Recently Added -->
+        <div class="col-md-4">
+            <h4 class="text-info">Recently Added</h4>
+            <ul class="list-group bg-dark">
+                @foreach (var album in Model.RecentAlbums)
+                {
+                    <li class="list-group-item bg-dark text-light d-flex align-items-center">
+                        <img src="@album.CoverUrl" alt="@album.Title" class="img-thumbnail me-3" style="width:60px; height:60px;" />
+                        <div>
+                            <strong>@album.Title</strong><br />
+                            <small>@album.Artist (@album.Year)</small>
+                        </div>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
 </div>
+
+@section Scripts {
+    <script>
+        const ctx = document.getElementById('genreChart').getContext('2d');
+        const genreChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: @Html.Raw(Json.Serialize(Model.GenreLabels)),
+                datasets: [{
+                    label: 'Records by Genre',
+                    data: @Html.Raw(Json.Serialize(Model.GenreCounts)),
+                    backgroundColor: 'rgba(0, 255, 255, 0.6)',
+                    borderColor: 'rgba(0, 255, 255, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+    </script>
+}
