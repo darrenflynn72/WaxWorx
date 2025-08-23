@@ -1,4 +1,4 @@
-namespace WaxWorx.Models
+namespace WaxWorx.UI.ViewModels
 {
     public class ErrorViewModel
     {
