@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35919.96
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "APIs", "APIs", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{9675A092-EDE5-4D68-A9A9-1DD6C505FED5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Backend", "Backend", "{0C465A8F-2A35-42F9-8631-28A2F982D49E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{2AA59634-0F01-45E5-82C7-8073FB7D5AC2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WaxWorx.UI", "WaxWorx.UI\WaxWorx.UI.csproj", "{4FCFC8C6-4215-5772-24C6-A24A2DF6BEBF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4FCFC8C6-4215-5772-24C6-A24A2DF6BEBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FCFC8C6-4215-5772-24C6-A24A2DF6BEBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FCFC8C6-4215-5772-24C6-A24A2DF6BEBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FCFC8C6-4215-5772-24C6-A24A2DF6BEBF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4FCFC8C6-4215-5772-24C6-A24A2DF6BEBF} = {2AA59634-0F01-45E5-82C7-8073FB7D5AC2}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5C49673C-416C-414A-A619-0CC4D0441467}
+	EndGlobalSection
+EndGlobal
