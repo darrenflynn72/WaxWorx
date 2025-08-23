@@ -1,5 +1,54 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model List<WaxWorx.UI.ViewModels.AlbumViewModel>
+
 @{
+    ViewData["Title"] = "View Albums";
 }
+
+<div class="container">
+    <h1 class="title">Albums</h1>
+
+    <a class="btn btn-custom-add" asp-action="AddAlbum">+ Add New Album</a>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Artist</th>
+                <th>Title</th>
+                <th>Genre</th>
+                <th>No. of Discs</th>
+                <th>Color</th>
+                <th>Picture Disc</th>
+                <th>Limited Edition</th>
+                <th>Boxset</th>
+                <th>Notes</th>
+                <th>Actions</th> <!-- Actions column remains -->
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var album in Model)
+            {
+                <tr>
+                    <td>@album.Artist?.Name</td>
+                    <td>@album.Title</td>
+                    <td>@album.Genre?.Name</td>
+                    <td>@album.NoOfDiscs</td>
+                    <td>@album.Color</td>
+                    <td>
+                        <input type="checkbox" disabled @(album.PictureDisc.HasValue && album.PictureDisc.Value ? "checked" : "") />
+                    </td>
+                    <td>
+                        <input type="checkbox" disabled @(album.LimitedEdition.HasValue && album.LimitedEdition.Value ? "checked" : "") />
+                    </td>
+                    <td>
+                        <input type="checkbox" disabled @(album.Boxset.HasValue && album.Boxset.Value ? "checked" : "") />
+                    </td>
+                    <td>@album.Notes</td>
+                    <td>
+                        <a class="btn btn-custom-edit btn-sm" asp-action="EditAlbum" asp-route-id="@album.Id">Edit</a>
+                        <a class="btn btn-custom-delete btn-sm" asp-action="DeleteAlbum" asp-route-id="@album.Id" onclick="return confirm('Are you sure you want to delete this album?');">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

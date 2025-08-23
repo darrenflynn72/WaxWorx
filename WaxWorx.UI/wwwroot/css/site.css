@@ -51,3 +51,55 @@ body {
     padding-bottom: 0.25rem;
     font-size: 0.95rem;
 }
+
+
+/* Custom Buttons */
+
+.btn-custom-view {
+    background-color: #800020; /* Classic Burgundy */
+    border-color: #6B0019; /* Dark Burgundy */
+    color: white; /* Make font white */
+}
+
+.btn-custom-add {
+    background-color: #C41E3A; /* Rosewood Red */
+    border-color: #A31A2F; /* Dark Rosewood */
+    color: white; /* Make font white */
+}
+
+.btn-custom-edit {
+    background-color: #B03060; /* Maroon */
+    border-color: #8B2454; /* Dark Maroon */
+    color: white; /* Make font white */
+}
+
+.btn-custom-delete {
+    background-color: #D16D92; /* Dusty Pink */
+    border-color: #B2597C; /* Muted Dusty Tone */
+    color: white; /* Make font white */
+}
+
+/* FIX DARK THEME FONT COLORS */
+
+/* High-contrast fix for dark theme */
+body, table, th, td, a, label, input, button {
+    color: #e0e0e0; /* Light gray for readability */
+}
+
+/* Optional: highlight headers slightly more */
+th {
+    color: #f0f0f0;
+    font-weight: 600;
+}
+
+/* Preserve button visibility */
+button {
+    background-color: #333;
+    color: #e0e0e0;
+    border: 1px solid #555;
+}
+
+/* Optional: hover state for links */
+a:hover {
+    color: #ffffff;
+}

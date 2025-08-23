@@ -89,42 +89,58 @@
         </div>
     </div>
 
-    <div class="container mt-4">
-        <h4>API Test Actions</h4>
-        <div class="d-flex gap-3">
-            <form asp-controller="Home" asp-action="TestCoverArtApi" method="post">
-                <button type="submit" class="btn btn-outline-secondary">Test CoverArt API</button>
-            </form>
-
-            <form asp-controller="Home" asp-action="TestMusicBrainzApi" method="post">
-                <button type="submit" class="btn btn-outline-primary">Test MusicBrainz API</button>
-            </form>
+    <div class="row">
+        <!-- API Tests -->
+        <div class="container mt-4">
+            <h4>API Test Actions</h4>
+            <div class="d-flex gap-3">
+                <form asp-controller="Home" asp-action="TestCoverArtApi" method="post">
+                    <button type="submit" class="btn btn-primary">Test CoverArt API</button>
+                </form>
+                <form asp-controller="Home" asp-action="TestMusicBrainzApi" method="post">
+                    <button type="submit" class="btn btn-primary">Test MusicBrainz API</button>
+                </form>
+            </div>
         </div>
+
+        <!-- Get DB Data -->
+        <div class="container mt-4">
+            <h4>DB Data Test Actions</h4>
+            <div class="d-flex gap-3">
+                <form asp-controller="Home" asp-action="ViewAlbums" method="get">
+                    <button type="submit" class="btn btn-primary">Test ViewAlbums</button>
+                </form>
+                <form asp-controller="Home" asp-action="ViewArtists" method="get">
+                    <button type="submit" class="btn btn-primary">Test ViewArtists</button>
+                </form>
+                <form asp-controller="Home" asp-action="ViewGenres" method="get">
+                    <button type="submit" class="btn btn-primary">Test ViewGenres</button>
+                </form>
+            </div>
+        </div>
+
     </div>
 
-
-</div>
-
-@section Scripts {
-    <script>
-        const ctx = document.getElementById('genreChart').getContext('2d');
-        const genreChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: @Html.Raw(Json.Serialize(Model.GenreLabels)),
-                datasets: [{
-                    label: 'Records by Genre',
-                    data: @Html.Raw(Json.Serialize(Model.GenreCounts)),
-                    backgroundColor: 'rgba(0, 255, 255, 0.6)',
-                    borderColor: 'rgba(0, 255, 255, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: { beginAtZero: true }
+    @section Scripts {
+        <script>
+            const ctx = document.getElementById('genreChart').getContext('2d');
+            const genreChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: @Html.Raw(Json.Serialize(Model.GenreLabels)),
+                    datasets: [{
+                        label: 'Records by Genre',
+                        data: @Html.Raw(Json.Serialize(Model.GenreCounts)),
+                        backgroundColor: 'rgba(0, 255, 255, 0.6)',
+                        borderColor: 'rgba(0, 255, 255, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
                 }
-            }
-        });
-    </script>
-}
+            });
+        </script>
+    }
