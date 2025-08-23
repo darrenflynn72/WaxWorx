@@ -48,29 +48,31 @@ namespace WaxWorx.Controllers
             return View(tempView); 
         }
 
-        public IActionResult Test()
+        public async Task<IActionResult> Test()
         {
             return Ok("TEST");
         }
 
-        public IActionResult TestCoverArtApi()
+        public async Task<IActionResult> TestCoverArtApi()
         {
-            // The Dark Side of the Moon by Pink Floyd
-            var mbid = "1973d7b6-9e7b-4cde-8a3c-0c3f4c3f4d3e";
+            // Release: Thriller by Michael Jackson
+            var mbid = "61bf0388-b8a9-48f4-81d1-7eb02706dfb0";
 
-            var data = _coverArtApiClient.TestAsync(mbid);
+            var data = await _coverArtApiClient.TestAsync(mbid);
 
             return Ok("TEST");
         }
 
-        public IActionResult TestMusicBrainzApi()
+        public async Task<IActionResult> TestMusicBrainzApi()
         {
-            // The Dark Side of the Moon by Pink Floyd
-            var mbid = "1973d7b6-9e7b-4cde-8a3c-0c3f4c3f4d3e";
+            // Release: Thriller by Michael Jackson
+            var mbid = "61bf0388-b8a9-48f4-81d1-7eb02706dfb0";
 
-            var data = _musicBrainzApiClient.TestAsync(mbid);
+            var data = await _musicBrainzApiClient.TestAsync(mbid);
 
-            return Ok("TEST");
+            return Ok(data);
+
+            //return Ok("TEST");
         }
 
         // Artist Endpoints

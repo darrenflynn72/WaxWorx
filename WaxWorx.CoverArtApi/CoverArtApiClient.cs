@@ -32,7 +32,9 @@ namespace WaxWorx.CoverArtApi
 
             try
             {
-                return await _httpClient.GetStringAsync(endpointUrl);
+                var data = await _httpClient.GetStringAsync(endpointUrl);
+
+                return data;
             }
             catch (Exception ex)
             {
