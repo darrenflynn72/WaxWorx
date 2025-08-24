@@ -76,7 +76,7 @@
             <canvas id="genreChart" height="200"></canvas>
         </div>
 
-        <!-- Recently Added -->
+@*         <!-- Recently Added -->
         <div class="col-md-4">
             <h4 class="text-info">Recently Added</h4>
             <ul class="list-group bg-dark">
@@ -91,7 +91,39 @@
                     </li>
                 }
             </ul>
+        </div> *@
+
+        <!-- Recently Added -->
+        <div class="col-md-4">
+            <h4 class="text-info">Recently Added</h4>
+
+            <div class="card bg-dark text-light border-secondary">
+                <div class="card-body p-0">
+                    @if (Model.RecentAlbums != null && Model.RecentAlbums.Any())
+                    {
+                        <ul class="list-group list-group-flush">
+                            @foreach (var album in Model.RecentAlbums)
+                            {
+                                <li class="list-group-item bg-dark text-light d-flex align-items-center border-secondary">
+                                    <img src="@album.CoverUrl" alt="@album.Title" class="img-thumbnail me-3" style="width:60px; height:60px;" />
+                                    <div>
+                                        <strong>@album.Title</strong><br />
+                                        <small>@album.Artist (@album.Year)</small>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <div class="text-muted p-3">
+                            <em>No recent albums yet.</em>
+                        </div>
+                    }
+                </div>
+            </div>
         </div>
+
     </div>
 
     <div class="row">

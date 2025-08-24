@@ -7,7 +7,14 @@
 <div class="container-fluid bg-dark text-light py-4">
     <h2 class="mb-4 text-uppercase text-secondary">Genres</h2>
 
-    <a class="btn btn-custom-add mb-3" asp-action="AddGenre">+ Add Genre</a>
+    <div class="d-flex justify-content-between mb-3">
+        <div>
+            <a class="btn btn-custom-add mb-3" asp-action="AddGenre">+ Add Genre</a>
+        </div>
+        <div>
+            <a class="btn btn-custom-view mb-3" asp-action="Index" asp-controller="Home">← Back</a>
+        </div>
+    </div>
 
     <table class="table table-dark table-hover table-bordered">
         <thead class="bg-dark text-light border-bottom border-secondary">
