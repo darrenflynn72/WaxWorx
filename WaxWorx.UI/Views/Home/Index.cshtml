@@ -73,7 +73,7 @@
     <div class="row mb-4">
         <div class="col-md-8">
             <h4 class="text-info">Collection Stats</h4>
-            <canvas id="genreChart" height="200"></canvas>
+            <canvas id="genreChart"></canvas>
         </div>
 
         <!-- Recently Added -->
@@ -144,6 +144,7 @@
         </div> *@
     </div>
 
+    
 
     <!-- Scripts -->
     @section Scripts {
@@ -164,8 +165,8 @@
                     }
 
                     // Dynamically scale canvas height based on number of genres
-                    canvas.height = labels.length * 40;
-
+                    canvas.height = labels.length * 18; // ~28px per genre
+                             
                     const ctx = canvas.getContext('2d');
 
                     if (window.genreChart && typeof window.genreChart.destroy === 'function') {
@@ -181,8 +182,11 @@
                                 data: counts,
                                 backgroundColor: '#17a2b8',
                                 borderColor: '#17a2b8',
-                                borderWidth: 1
-                            }]
+                                borderWidth: 1,       
+                                barThickness: 44,           // Fixed bar height
+                                categoryPercentage: 0.5,    // Shrinks each category slot
+                                barPercentage: 1.0          // Fills most of the slot with the bar
+                            }] 
                         },
                         options: {
                             indexAxis: 'y',
@@ -219,6 +223,8 @@
                                 }
                             }
                         }
+
+
                     });
 
                     console.log("Chart instance:", window.genreChart);
@@ -255,4 +261,4 @@
                 });
             </script> *@
 
-    } <!-- End of Scripts -->
+
