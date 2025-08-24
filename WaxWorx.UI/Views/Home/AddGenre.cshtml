@@ -1,5 +1,24 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model WaxWorx.UI.ViewModels.GenreViewModel
+
 @{
+    ViewData["Title"] = "Add Genre";
 }
+
+<div class="container bg-dark text-light py-4">
+    <h2 class="text-uppercase text-info mb-4">Add Genre</h2>
+
+    <form asp-action="AddGenre" method="post">
+        <!-- Hidden AUDIT Fields for Genre -->
+@*         <input type="hidden" name="Genre.CreatedBy" value="@Model.CreatedBy" />
+        <input type="hidden" name="Genre.CreatedDate" value="@Model.CreatedDate" />
+        <input type="hidden" name="Genre.ModifiedBy" value="@Model.ModifiedBy" />
+        <input type="hidden" name="Genre.ModifiedDate" value="@Model.ModifiedDate" /> *@
+
+        <div class="form-group">
+            <label for="Name">Genre Name</label>
+            <input type="text" id="Name" name="Name" class="form-control" value="@Model.Name" required />
+        </div>
+
+        <button type="submit" class="btn btn-custom-add">Add Genre</button>
+    </form>
+</div>

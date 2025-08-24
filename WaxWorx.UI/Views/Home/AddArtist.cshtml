@@ -1,0 +1,24 @@
+﻿@model WaxWorx.UI.ViewModels.ArtistViewModel
+
+@{
+    ViewData["Title"] = "Add Artist";
+}
+
+<div class="container bg-dark text-light py-4">
+    <h2 class="text-uppercase text-info mb-4">Add Artist</h2>
+
+    <form asp-action="AddArtist" method="post">
+        <!-- Hidden AUDIT Fields for Artist -->
+@*         <input type="hidden" name="Artist.CreatedBy" value="@Model.CreatedBy" />
+        <input type="hidden" name="Artist.CreatedDate" value="@Model.CreatedDate" />
+        <input type="hidden" name="Artist.ModifiedBy" value="@Model.ModifiedBy" />
+        <input type="hidden" name="Artist.ModifiedDate" value="@Model.ModifiedDate" /> *@
+
+        <div class="form-group">
+            <label for="Name">Artist Name</label>
+            <input type="text" id="Name" name="Name" class="form-control" value="@Model.Name" required />
+        </div>
+
+        <button type="submit" class="btn btn-custom-add">Add Artist</button>
+    </form>
+</div>

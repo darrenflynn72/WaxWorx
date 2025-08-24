@@ -8,11 +8,13 @@ namespace WaxWorx.UI.ViewModels
         public int Id { get; set; }
         [Required(ErrorMessage = "Title is required")]
         public string Title { get; set; }
+        public string MbId { get; set; }
+        public string ReleaseYear { get; set; }
         public int ArtistId { get; set; } // Foreign key for Artist
         public int GenreId { get; set; } // Foreign key for Genre
         public IFormFile? ImageFile { get; set; } // For file upload
         [BindNever] // Prevent this property from being included in model binding
-        public string? ImageUrl { get; set; } // For displaying the image 
+        public string? CoverUrl { get; set; } // For displaying the image 
         public int? NoOfDiscs { get; set; }
         public string? Color { get; set; }
         public bool? PictureDisc { get; set; }

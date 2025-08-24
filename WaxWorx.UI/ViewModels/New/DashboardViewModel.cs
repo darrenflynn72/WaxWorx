@@ -15,7 +15,8 @@
     {
         public string Title { get; set; }
         public string Artist { get; set; }
-        public int Year { get; set; }
+        public string ReleaseYear { get; set; }
         public string CoverUrl { get; set; }
+        public string MbId { get; set; }
     }
 }

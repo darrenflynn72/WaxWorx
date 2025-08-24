@@ -76,39 +76,27 @@
             <canvas id="genreChart" height="200"></canvas>
         </div>
 
-@*         <!-- Recently Added -->
-        <div class="col-md-4">
-            <h4 class="text-info">Recently Added</h4>
-            <ul class="list-group bg-dark">
-                @foreach (var album in Model.RecentAlbums)
-                {
-                    <li class="list-group-item bg-dark text-light d-flex align-items-center">
-                        <img src="@album.CoverUrl" alt="@album.Title" class="img-thumbnail me-3" style="width:60px; height:60px;" />
-                        <div>
-                            <strong>@album.Title</strong><br />
-                            <small>@album.Artist (@album.Year)</small>
-                        </div>
-                    </li>
-                }
-            </ul>
-        </div> *@
-
         <!-- Recently Added -->
         <div class="col-md-4">
             <h4 class="text-info">Recently Added</h4>
 
-            <div class="card bg-dark text-light border-secondary">
+            <div class="card card-bg-chart text-light border-secondary">
                 <div class="card-body p-0">
                     @if (Model.RecentAlbums != null && Model.RecentAlbums.Any())
                     {
                         <ul class="list-group list-group-flush">
                             @foreach (var album in Model.RecentAlbums)
                             {
-                                <li class="list-group-item bg-dark text-light d-flex align-items-center border-secondary">
-                                    <img src="@album.CoverUrl" alt="@album.Title" class="img-thumbnail me-3" style="width:60px; height:60px;" />
+                                <li class="list-group-item list-bg-chart text-light d-flex align-items-center border-secondary">
+                                    <div class="me-3 p-1 border border-info rounded">
+                                        <img src="@album.CoverUrl"
+                                             alt="@album.Title"
+                                             class="d-block"
+                                             style="width:80px; height:80px;" />
+                                    </div>
                                     <div>
                                         <strong>@album.Title</strong><br />
-                                        <small>@album.Artist (@album.Year)</small>
+                                        <small>@album.Artist (@album.ReleaseYear)</small>
                                     </div>
                                 </li>
                             }
@@ -123,7 +111,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 
     <div class="row">
@@ -132,29 +119,29 @@
             <h4>API Test Actions</h4>
             <div class="d-flex gap-3">
                 <form asp-controller="CoverArt" asp-action="TestCoverArtApi" method="post">
-                    <button type="submit" class="btn btn-primary">Test CoverArt API</button>
+                    <button type="submit" class="btn btn-custom-view btn-primary">Test CoverArt API</button>
                 </form>
                 <form asp-controller="MusicBrainz" asp-action="TestMusicBrainzApi" method="post">
-                    <button type="submit" class="btn btn-primary">Test MusicBrainz API</button>
+                    <button type="submit" class="btn btn-custom-view btn-primary">Test MusicBrainz API</button>
                 </form>
             </div>
         </div>
 
-        <!-- Get DB Data -->
+@*         <!-- Get DB Data -->
         <div class="container mt-4">
             <h4>DB Data Test Actions</h4>
             <div class="d-flex gap-3">
                 <form asp-controller="Home" asp-action="ViewAlbums" method="get">
-                    <button type="submit" class="btn btn-primary">Test ViewAlbums</button>
+                    <button type="submit" class="btn btn-custom-view btn-primary">Test ViewAlbums</button>
                 </form>
                 <form asp-controller="Home" asp-action="ViewArtists" method="get">
-                    <button type="submit" class="btn btn-primary">Test ViewArtists</button>
+                    <button type="submit" class="btn btn-custom-view btn-primary">Test ViewArtists</button>
                 </form>
                 <form asp-controller="Home" asp-action="ViewGenres" method="get">
-                    <button type="submit" class="btn btn-primary">Test ViewGenres</button>
+                    <button type="submit" class="btn btn-custom-view btn-primary">Test ViewGenres</button>
                 </form>
             </div>
-        </div>
+        </div> *@
 
     </div>
 

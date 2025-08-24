@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/dashboard-theme.css" />
+    <link rel="stylesheet" href="~/css/dashboard-theme.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/mycustom.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/WaxWorx.styles.css" asp-append-version="true" />
 </head>
@@ -28,13 +28,10 @@
                             <a class="nav-link active" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="Home" asp-action="ViewAlbums">Collection</a>
+                            <a class="nav-link" asp-controller="Home" asp-action="Login">Login</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" asp-controller="Home" asp-action="AddAlbum">Add</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Home" asp-action="EditAlbum" asp-route-id="14">Edit (ID 14)</a>
+                            <a class="nav-link" asp-controller="Home" asp-action="Settings">Setting</a>
                         </li>
                     </ul>
                 </div>

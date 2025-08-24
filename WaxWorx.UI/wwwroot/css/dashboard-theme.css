@@ -38,11 +38,11 @@ h2, h4 {
     border-radius: 0.25rem;
     box-shadow: 0 0 5px rgba(0,0,0,0.3);
 }
-
+/*
     .card.bg-secondary {
         background-color: var(--accent-secondary);
     }
-
+*/
     .card.bg-info {
         background-color: var(--accent-info);
     }
@@ -105,5 +105,10 @@ canvas#genreChart {
     }
 }
 
+.card.card-bg-chart {
+    background-color: #1a1a1a !important;
+}
 
-
+.list-bg-chart {
+    background-color: #1a1a1a !important;
+}

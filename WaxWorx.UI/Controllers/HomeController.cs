@@ -47,38 +47,97 @@ namespace WaxWorx.Controllers
                 TotalArtists = _context.Artists.Count(),
                 TotalGenres = _context.Genres.Count(),
                 //ConditionScore = CalculateConditionScore(), // or set a static value
-                RecentAlbums = new List<AlbumSummary>() // Safe default
+                RecentAlbums = DummyRecentAlbums() // Safe default
+                //RecentAlbums = GetRecentAlbums()
             };
 
-            return View(tempView); 
+            return View(tempView);
+        }
+
+        public IActionResult Login()
+        {
+            // Login
+
+            return Ok("Login View");
+        }
+
+        public IActionResult Settings()
+        {
+            // Settings
+
+            return Ok("Settings View");
+        }
+
+        private List<AlbumSummary> DummyRecentAlbums()
+        {
+            return new List<AlbumSummary>
+            {
+                new AlbumSummary
+                {
+                    MbId = "",
+                    Title = "Lateralus",
+                    Artist = "Tool",
+                    ReleaseYear = "2001",
+                    CoverUrl = "https://upload.wikimedia.org/wikipedia/en/6/63/Tool_-_Lateralus.jpg"
+                },
+                new AlbumSummary
+                {
+                    MbId = "",
+                    Title = "Keep Me Fed",
+                    Artist = "The Warning",
+                    ReleaseYear = "2024",
+                    CoverUrl = "https://upload.wikimedia.org/wikipedia/en/c/cb/The_Warning_-_Keep_Me_Fed.png"
+                },
+               new AlbumSummary
+                {
+                   MbId = "",
+                    Title = "The Dark Side of the Moon",
+                    Artist = "Pink Floyd",
+                    ReleaseYear = "1973",
+                    CoverUrl = "https://upload.wikimedia.org/wikipedia/en/3/3b/Dark_Side_of_the_Moon.png"
+                },
+                new AlbumSummary
+                {
+                    MbId = "",
+                    Title = "Abbey Road",
+                    Artist = "The Beatles",
+                    ReleaseYear     = "1969",
+                    CoverUrl = "https://upload.wikimedia.org/wikipedia/en/4/42/Beatles_-_Abbey_Road.jpg"
+                },
+                  new AlbumSummary
+                {
+                    MbId = "",
+                    Title = "Back in Black",
+                    Artist = "AC/DC",
+                    ReleaseYear = "1980",
+                    CoverUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/ACDC_Back_in_Black.png/1024px-ACDC_Back_in_Black.png"
+                }
+            };
+        }
+
+        private List<AlbumSummary> GetRecentAlbums()
+        {
+            int topRecentAlbumCount = 5;
+
+            return _context.Albums
+                .Include(a => a.Artist) // if you need Artist.Name
+                .OrderByDescending(a => a.CreatedDate)
+                .Take(topRecentAlbumCount)
+                .Select(a => new AlbumSummary
+                {
+                    MbId = a.MbId,
+                    Title = a.Title,
+                    Artist = a.Artist.Name,
+                    ReleaseYear = a.ReleaseYear, // or a.ReleaseYear if that’s your field
+                    CoverUrl = a.Image.CoverUrl
+                })
+                .ToList();
         }
 
         public async Task<IActionResult> Test()
         {
             return Ok("TEST");
         }
-
-
-        //public IActionResult GetAlbumCount()
-        //{
-        //    var count = _context.Albums.Count();
-
-        //    return Content(count.ToString());
-        //}
-
-        //public IActionResult GetArtistCount()
-        //{
-        //    var count = _context.Albums.Count();
-
-        //    return Content(count.ToString());
-        //}
-
-        //public IActionResult GetGenreCount()
-        //{
-        //    var count = _context.Albums.Count();
-
-        //    return Content(count.ToString());
-        //}
 
         // Artist Endpoints
 
@@ -97,10 +156,12 @@ namespace WaxWorx.Controllers
                 {
                     Id = a.Id,
                     Title = a.Title,
+                    MbId = a.MbId,
                     Artist = a.Artist != null ? new ArtistViewModel
                     {
                         Id = a.Artist.Id,
-                        Name = a.Artist.Name
+                        Name = a.Artist.Name,
+                        MbId = a.MbId
                     } : null,
                     Genre = a.Genre != null ? new GenreViewModel
                     {
@@ -132,12 +193,12 @@ namespace WaxWorx.Controllers
                 .Select(a => new ArtistViewModel
                 {
                     Id = a.Id,
-                    Name = a.Name
+                    Name = a.Name,
+                    MbId = a.MbId
                 })
                 .ToList();
             // Store the lookup data in ViewBag
             ViewBag.ArtistLookup = artists;
-
 
             var genres = _context.Genres
                 .OrderBy(a => a.Name) // Order by Genre Name
@@ -175,7 +236,7 @@ namespace WaxWorx.Controllers
                         albumViewModel.ImageFile.CopyTo(ms);
                         image = new WaxWorx.Data.Entities.Image
                         {
-                            FileName = albumViewModel.ImageFile.FileName,
+                            CoverUrl = albumViewModel.ImageFile.FileName,
                             Data = ms.ToArray(),
                             ContentType = albumViewModel.ImageFile.ContentType
                         };
@@ -191,6 +252,7 @@ namespace WaxWorx.Controllers
                 var album = new Album
                 {
                     Title = albumViewModel.Title,
+                    MbId = albumViewModel.MbId,
                     ArtistId = albumViewModel.Artist.Id, // Use the nested ArtistViewModel's Id
                     GenreId = albumViewModel.Genre.Id,  // Use the nested GenreViewModel's Id
                     Image = image, // Associate the uploaded image
@@ -242,10 +304,12 @@ namespace WaxWorx.Controllers
             {
                 Id = album.Id,
                 Title = album.Title,
+                MbId = album.MbId,
                 Artist = album.Artist != null ? new ArtistViewModel
                 {
                     Id = album.Artist.Id,
-                    Name = album.Artist.Name
+                    Name = album.Artist.Name,
+                    MbId = album.Artist.MbId,
                 } : null, // Map ArtistViewModel or set to null if Artist is not found
 
                 Genre = album.Genre != null ? new GenreViewModel
@@ -254,7 +318,7 @@ namespace WaxWorx.Controllers
                     Name = album.Genre.Name
                 } : null, // Map GenreViewModel or set to null if Genre is not found
 
-                ImageUrl = album.Image != null
+                CoverUrl = album.Image != null
                     ? Url.Action("GetImage", "Home", new { id = album.Image.Id })
                     : null, // Generate ImageUrl or set to null if no image exists
 
@@ -298,6 +362,7 @@ namespace WaxWorx.Controllers
 
                 // Map properties from AlbumViewModel to the existing Album DbContext model
                 existingAlbum.Title = albumViewModel.Title;
+                existingAlbum.MbId = albumViewModel.MbId;
                 existingAlbum.ArtistId = albumViewModel.Artist?.Id ?? existingAlbum.ArtistId; // Handle null ArtistViewModel
                 existingAlbum.GenreId = albumViewModel.Genre?.Id ?? existingAlbum.GenreId;   // Handle null GenreViewModel
                 existingAlbum.NoOfDiscs = albumViewModel.NoOfDiscs;
@@ -322,7 +387,7 @@ namespace WaxWorx.Controllers
                         albumViewModel.ImageFile.CopyTo(ms);
                         var newImage = new WaxWorx.Data.Entities.Image
                         {
-                            FileName = albumViewModel.ImageFile.FileName,
+                            CoverUrl = albumViewModel.ImageFile.FileName,
                             Data = ms.ToArray(),
                             ContentType = albumViewModel.ImageFile.ContentType
                         };
@@ -373,7 +438,8 @@ namespace WaxWorx.Controllers
                 .Select(a => new ArtistViewModel
                 {
                     Id = a.Id,
-                    Name = a.Name
+                    Name = a.Name,
+                    MbId = a.MbId
                 })
                 .ToList();
 
@@ -386,7 +452,14 @@ namespace WaxWorx.Controllers
             // Setting ViewData["Title"] for the view
             ViewData["Title"] = "Add Artist";
 
-            return View(new ArtistViewModel());
+            // create the new model for the view
+            var model = new ArtistViewModel
+            {
+                //Name = "",
+                //MbId = ""
+            };
+
+            return View(model);
         }
 
         [HttpPost]
@@ -397,6 +470,7 @@ namespace WaxWorx.Controllers
                 var artist = new Artist
                 {
                     Name = artistViewModel.Name,
+                    MbId = artistViewModel.MbId,
                     CreatedBy = "MyName", // Replace with actual user name
                     CreatedDate = DateTime.Now,
                     ModifiedBy = "MyName", // Replace with actual user name
@@ -446,6 +520,7 @@ namespace WaxWorx.Controllers
                 }
 
                 artist.Name = artistViewModel.Name;
+                artist.MbId = artistViewModel.MbId;
                 artist.ModifiedBy = "MyName"; // Replace with actual user name
                 artist.ModifiedDate = DateTime.Now;
 
@@ -478,7 +553,14 @@ namespace WaxWorx.Controllers
             // Setting ViewData["Title"] for the view
             ViewData["Title"] = "Add Genre";
 
-            return View(new GenreViewModel());
+            // create the new model for the view
+            var model = new GenreViewModel
+            {
+                //Name = "",
+                //MbId = ""
+            };
+
+            return View(model);
         }
 
         [HttpPost]

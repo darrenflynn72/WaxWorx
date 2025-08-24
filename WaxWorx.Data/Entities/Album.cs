@@ -14,6 +14,8 @@ namespace WaxWorx.Data.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Title { get; set; }
+        public string MbId { get; set; }
+        public string ReleaseYear { get; set; }
         public int ArtistId { get; set; } // Foreign key for Artist
         public int GenreId { get; set; } // Foreign key for Genre
         public int? ImageId { get; set; } // Nullable foreign key
