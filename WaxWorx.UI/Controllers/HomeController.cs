@@ -19,29 +19,34 @@ namespace WaxWorx.Controllers
 
         // configs
         private readonly CoverArtApiConfig _configCoverArtApi;
-        private readonly MusicBrainzApiConfig _configMusicBrainzAp;
+        private readonly MusicBrainzApiConfig _configMusicBrainzApi;
 
         // external APIs
-        private readonly MusicBrainzApiClient _musicBrainzApiClient;
         private readonly CoverArtApiClient _coverArtApiClient;
+        private readonly MusicBrainzApiClient _musicBrainzApiClient;
 
         public HomeController(ILogger<HomeController> logger, InventoryDbContext context,
                                 IOptions<CoverArtApiConfig> configCoverArtApi, IOptions<MusicBrainzApiConfig> configMusicBrainzApi,
-                                MusicBrainzApiClient musicBrainzApiClient, CoverArtApiClient coverArtApiClient)
+                                CoverArtApiClient coverArtApiClient, MusicBrainzApiClient musicBrainzApiClient)
         {
             _logger = logger;
             _context = context;
             _configCoverArtApi = configCoverArtApi.Value;
-            _configMusicBrainzAp = configMusicBrainzApi.Value;
-            _musicBrainzApiClient = musicBrainzApiClient;
+            _configMusicBrainzApi = configMusicBrainzApi.Value;
             _coverArtApiClient = coverArtApiClient;
+            _musicBrainzApiClient = musicBrainzApiClient;
         }
 
         // Main page with options
         public IActionResult Index()
         {
-            var tempView = new VinylDashboardViewModel
+            // Get Summery Counts
+            var tempView = new DashboardViewModel
             {
+                TotalRecords = _context.Albums.Count(),
+                TotalArtists = _context.Artists.Count(),
+                TotalGenres = _context.Genres.Count(),
+                //ConditionScore = CalculateConditionScore(), // or set a static value
                 RecentAlbums = new List<AlbumSummary>() // Safe default
             };
 
@@ -53,34 +58,27 @@ namespace WaxWorx.Controllers
             return Ok("TEST");
         }
 
-        public async Task<IActionResult> TestCoverArtApi()
-        {
-            // Release: Thriller by Michael Jackson
-            var mbid = "61bf0388-b8a9-48f4-81d1-7eb02706dfb0";
 
-            //var data = await _coverArtApiClient.TestAsync(mbid);
+        //public IActionResult GetAlbumCount()
+        //{
+        //    var count = _context.Albums.Count();
 
-            // Get CDN Image path
-            var data = await _coverArtApiClient.GetFrontCoverArtUrlAsync(mbid);
+        //    return Content(count.ToString());
+        //}
 
-            // Get Image byte array
-            //var data = await _coverArtApiClient.GetFrontCoverArtAsync(mbid);
+        //public IActionResult GetArtistCount()
+        //{
+        //    var count = _context.Albums.Count();
 
+        //    return Content(count.ToString());
+        //}
 
-            return Ok("TEST");
-        }
+        //public IActionResult GetGenreCount()
+        //{
+        //    var count = _context.Albums.Count();
 
-        public async Task<IActionResult> TestMusicBrainzApi()
-        {
-            // Release: Thriller by Michael Jackson
-            var mbid = "61bf0388-b8a9-48f4-81d1-7eb02706dfb0";
-
-            var data = await _musicBrainzApiClient.TestAsync(mbid);
-
-            return Ok(data);
-
-            //return Ok("TEST");
-        }
+        //    return Content(count.ToString());
+        //}
 
         // Artist Endpoints
 

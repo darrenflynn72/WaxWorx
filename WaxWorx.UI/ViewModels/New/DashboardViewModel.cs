@@ -1,6 +1,6 @@
 ﻿namespace WaxWorx.UI.ViewModels
 {
-    public class VinylDashboardViewModel
+    public class DashboardViewModel
     {
         public int TotalRecords { get; set; }
         public int TotalArtists { get; set; }

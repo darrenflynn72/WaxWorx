@@ -1,4 +1,4 @@
-﻿@model WaxWorx.UI.ViewModels.VinylDashboardViewModel
+﻿@model WaxWorx.UI.ViewModels.DashboardViewModel
 
 @{
     ViewData["Title"] = "Dashboard";
@@ -7,7 +7,6 @@
 <div class="container-fluid bg-dark text-light py-4">
     <h2 class="mb-4 text-uppercase text-secondary">Vinyl Record Collection</h2>
 
-    <!-- Summary Cards -->
     <!-- Summary Cards -->
     <div class="row mb-4 summary-cards">
         <div class="col-md-3">
@@ -94,10 +93,10 @@
         <div class="container mt-4">
             <h4>API Test Actions</h4>
             <div class="d-flex gap-3">
-                <form asp-controller="Home" asp-action="TestCoverArtApi" method="post">
+                <form asp-controller="CoverArt" asp-action="TestCoverArtApi" method="post">
                     <button type="submit" class="btn btn-primary">Test CoverArt API</button>
                 </form>
-                <form asp-controller="Home" asp-action="TestMusicBrainzApi" method="post">
+                <form asp-controller="MusicBrainz" asp-action="TestMusicBrainzApi" method="post">
                     <button type="submit" class="btn btn-primary">Test MusicBrainz API</button>
                 </form>
             </div>
