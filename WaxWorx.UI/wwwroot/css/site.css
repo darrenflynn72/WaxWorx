@@ -55,28 +55,41 @@ body {
 
 /* Custom Buttons */
 
+/*.btn-custom-view:hover,
+.btn-custom-add:hover,
+.btn-custom-edit:hover,
+.btn-custom-delete:hover {
+    filter: brightness(1.1);
+    transition: filter 0.2s ease-in-out;
+}
+*/
+
+/* View Button Orange Accent */
 .btn-custom-view {
-    background-color: #800020; /* Classic Burgundy */
-    border-color: #6B0019; /* Dark Burgundy */
-    color: white; /* Make font white */
+    background-color: #29B6F6; /* Light Blue */
+    border-color: #0288D1; /* Deeper Blue */
+    color: white;
 }
 
+/* Add Button Blue Accent */
 .btn-custom-add {
-    background-color: #C41E3A; /* Rosewood Red */
-    border-color: #A31A2F; /* Dark Rosewood */
-    color: white; /* Make font white */
+    background-color: #66BB6A; /* Fresh Green */
+    border-color: #388E3C; /* Deeper Green */
+    color: white;
 }
 
+/* Edit Button Red Accent */
 .btn-custom-edit {
-    background-color: #B03060; /* Maroon */
-    border-color: #8B2454; /* Dark Maroon */
-    color: white; /* Make font white */
+    background-color: #FFA726; /* Warm Orange */
+    border-color: #FB8C00; /* Slightly deeper orange for contrast */
+    color: white;
 }
 
+/* Delete Button Green Accent */
 .btn-custom-delete {
-    background-color: #D16D92; /* Dusty Pink */
-    border-color: #B2597C; /* Muted Dusty Tone */
-    color: white; /* Make font white */
+    background-color: #EF5350; /* Soft Red */
+    border-color: #D32F2F; /* Deeper Red */
+    color: white;
 }
 
 /* FIX DARK THEME FONT COLORS */
