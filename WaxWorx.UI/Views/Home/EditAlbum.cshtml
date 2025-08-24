@@ -1,0 +1,166 @@
+﻿@model WaxWorx.UI.ViewModels.AlbumViewModel
+
+@{
+    ViewData["Title"] = "Edit Album";
+}
+
+<div class="container bg-dark text-light py-4">
+    <h2 class="text-uppercase text-info mb-4">Edit Album</h2>
+
+    <form asp-action="EditAlbum" method="post" enctype="multipart/form-data">
+        <!-- Hidden ID Field -->
+        <input type="hidden" name="Id" value="@Model.Id" />
+        <input type="hidden" name="ArtistId" value="@Model.ArtistId" />
+        <input type="hidden" name="GenreId" value="@Model.GenreId" />
+
+@*         <!-- Hidden AUDIT Fields for Album -->
+        <input type="hidden" name="CreatedBy" value="@Model.CreatedBy" />
+        <input type="hidden" name="CreatedDate" value="@Model.CreatedDate" />
+        <input type="hidden" name="ModifiedBy" value="@Model.ModifiedBy" />
+        <input type="hidden" name="ModifiedDate" value="@Model.ModifiedDate" />
+
+        <!-- Hidden AUDIT Fields for Artist -->
+        <input type="hidden" name="Artist.CreatedBy" value="@Model.Artist?.CreatedBy" />
+        <input type="hidden" name="Artist.CreatedDate" value="@Model.Artist?.CreatedDate" />
+        <input type="hidden" name="Artist.ModifiedBy" value="@Model.Artist?.ModifiedBy" />
+        <input type="hidden" name="Artist.ModifiedDate" value="@Model.Artist?.ModifiedDate" />
+
+        <!-- Hidden AUDIT Fields for Genre -->
+        <input type="hidden" name="Genre.CreatedBy" value="@Model.Genre?.CreatedBy" />
+        <input type="hidden" name="Genre.CreatedDate" value="@Model.Genre?.CreatedDate" />
+        <input type="hidden" name="Genre.ModifiedBy" value="@Model.Genre?.ModifiedBy" />
+        <input type="hidden" name="Genre.ModifiedDate" value="@Model.Genre?.ModifiedDate" /> *@
+
+
+        <!-- Title -->
+        <div class="row mb-3">
+            <div class="col">
+                <label for="Title">Title</label>
+                <input type="text" id="Title" name="Title" class="form-control" value="@Model.Title" required />
+            </div>
+        </div>
+
+        <!-- Artist -->
+        <div class="row mb-3">
+            <div class="col">
+                <label for="ArtistId">Artist</label>
+                <select id="ArtistId" name="Artist.Id" class="form-control" required>
+                    <option value="@Model.Artist?.Id">@Model.Artist?.Name</option>
+                    <!-- Populate with other artist options -->
+                </select>
+            </div>
+        </div>
+        <input type="hidden" name="Artist.Name" value="@Model.Artist?.Name" /> <!-- Include Name explicitly -->
+
+        <!-- Genre -->
+        <div class="row mb-3">
+            <div class="col">
+                <label for="GenreId">Genre</label>
+                <select id="GenreId" name="Genre.Id" class="form-control" required>
+                    <option value="@Model.Genre?.Id">@Model.Genre?.Name</option>
+                    <!-- Populate with other genre options -->
+                </select>
+            </div>
+        </div>
+        <input type="hidden" name="Genre.Name" value="@Model.Genre?.Name" /> <!-- Include Name explicitly -->
+
+        <!-- Image -->
+        <div class="row align-items-center mb-3">
+            <!-- Current Album Cover -->
+            <div class="col-md-6 text-center">
+                <label>Current Album Cover</label>
+                <div style="border: 2px solid #ccc; width: 200px; height: 200px; display: flex; justify-content: center; align-items: center; margin: 0 auto;">
+@*                     @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                    {
+                        <img src="@Model.ImageUrl" style="max-width: 100%; max-height: 100%;" alt="Album Cover" />
+                    }
+                    else
+                    {
+                        <span style="color: #999;">Select Browse to choose an album cover image.</span>
+                    } *@
+                </div>
+            </div>
+
+            <!-- Change Album Cover -->
+            <div class="col-md-6">
+                <label for="ImageFile">Change Album Cover</label>
+                <input type="file" id="ImageFile" name="ImageFile" class="form-control" />
+            </div>
+        </div>
+
+        <!-- Number of Discs -->
+        <div class="row mb-3">
+            <div class="col">
+                <label for="NoOfDiscs">Number of Discs</label>
+                <input type="number" id="NoOfDiscs" name="NoOfDiscs" class="form-control" value="@Model.NoOfDiscs" />
+            </div>
+        </div>
+
+        <!-- Color -->
+        <div class="row mb-3">
+            <div class="col">
+                <label for="Color">Color</label>
+                <input type="text" id="Color" name="Color" class="form-control" value="@Model.Color" />
+            </div>
+        </div>
+
+        <!-- Picture Disc -->
+        <div class="row mb-3">
+            <div class="col">
+                <div class="form-check">
+                    <!-- Hidden field to ensure a value is submitted when checkbox is unchecked -->
+                    <input type="hidden" name="PictureDisc" value="false" />
+                    <input type="checkbox" id="PictureDisc" name="PictureDisc" class="form-check-input" @(Model.PictureDisc.HasValue && Model.PictureDisc.Value ? "checked" : "") />
+                    <label for="PictureDisc" class="form-check-label">Picture Disc</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Limited Edition -->
+        <div class="row mb-3">
+            <div class="col">
+                <div class="form-check">
+                    <!-- Hidden field to ensure a value is submitted when checkbox is unchecked -->
+                    <input type="hidden" name="LimitedEdition" value="false" />
+                    <input type="checkbox" id="LimitedEdition" name="LimitedEdition" class="form-check-input" @(Model.LimitedEdition.HasValue && Model.LimitedEdition.Value ? "checked" : "") />
+                    <label for="LimitedEdition" class="form-check-label">Limited Edition</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Limited Edition Number -->
+        <div class="row mb-3">
+            <div class="col">
+                <label for="LimitedEditioNo">Limited Edition Number</label>
+                <input type="text" id="LimitedEditioNo" name="LimitedEditioNo" class="form-control" value="@Model.LimitedEditioNo" />
+            </div>
+        </div>
+
+        <!-- Boxset -->
+        <div class="row mb-3">
+            <div class="col">
+                <div class="form-check">
+                    <!-- Hidden field to ensure a value is submitted when checkbox is unchecked -->
+                    <input type="hidden" name="Boxset" value="false" />
+                    <input type="checkbox" id="Boxset" name="Boxset" class="form-check-input" @(Model.Boxset.HasValue && Model.Boxset.Value ? "checked" : "") />
+                    <label for="Boxset" class="form-check-label">Boxset</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Notes -->
+        <div class="row mb-3">
+            <div class="col">
+                <label for="Notes">Notes</label>
+                <textarea id="Notes" name="Notes" class="form-control">@Model.Notes</textarea>
+            </div>
+        </div>
+
+        <!-- Update Button -->
+        <div class="row">
+            <div class="col">
+                <button type="submit" class="btn btn-custom-edit">Update Album</button>
+            </div>
+        </div>
+    </form>
+</div>

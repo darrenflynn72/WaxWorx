@@ -12,6 +12,5 @@ namespace WaxWorx.UI.ViewModels
 
         public IEnumerable<SelectListItem> GenreOptions { get; set; }
         public IEnumerable<SelectListItem> ConditionOptions { get; set; }
-
     }
 }
