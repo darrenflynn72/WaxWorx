@@ -27,7 +27,7 @@ main .container-fluid {
 
 /* Headings */
 h2, h4 {
-    text-transform: uppercase;
+    /* text-transform: uppercase; */
     color: var(--accent-info);
     letter-spacing: 0.5px;
 }
@@ -105,10 +105,18 @@ canvas#genreChart {
     }
 }
 
+/* Charts */
+
 .card.card-bg-chart {
     background-color: #1a1a1a !important;
 }
 
 .list-bg-chart {
     background-color: #1a1a1a !important;
+}
+
+#genreChart {
+    width: 100% !important;
+    height: 300px !important;
+    display: block;
 }

@@ -134,6 +134,27 @@ namespace WaxWorx.Controllers
                 .ToList();
         }
 
+        [HttpGet]
+        public IActionResult GetGenreStats()
+        {
+            var genreCounts = _context.Albums
+                .Include(a => a.Genre)
+                .Where(a => a.Genre != null)
+                .GroupBy(a => a.Genre.Name)
+                .Select(g => new
+                {
+                    Genre = g.Key,
+                    Count = g.Count()
+                })
+                .OrderByDescending(g => g.Count)
+                .ToList();
+
+            var result =  Json(genreCounts);
+            return result;
+
+            //return Json(genreCounts);
+        }
+
         public async Task<IActionResult> Test()
         {
             return Ok("TEST");

@@ -5,7 +5,19 @@
 }
 
 <div class="container bg-dark text-light py-4">
-    <h2 class="text-uppercase text-info mb-4">Edit Album</h2>
+    <div class="d-flex justify-content-between mb-3">
+        <div>
+            <div class="d-flex align-items-center mb-4">
+                <div class="summary-icon text-accent-orange me-3">
+                    <i class="bi bi-disc-fill fs-1"></i>
+                </div>
+                <h2 class="text-info mb-4">Edit Album</h2>
+            </div>
+        </div>
+        <div>
+            <a class="btn btn-custom-view mb-3" asp-action="Index" asp-controller="Home">← Back</a>
+        </div>
+    </div>
 
     <form asp-action="EditAlbum" method="post" enctype="multipart/form-data">
         <!-- Hidden ID Field -->
