@@ -725,9 +725,9 @@ namespace WaxWorx.Controllers
                 };
 
                 var knownGrades = new List<string>
-        {
-            "Mint", "Near Mint", "Very Good+", "Very Good", "Good", "Fair", "Poor", "U"
-        };
+                {
+                    "Mint", "Near Mint", "Very Good+", "Very Good", "Good", "Fair", "Poor", "U"
+                };
 
                 var canonicalCodeMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
                 {
@@ -799,15 +799,15 @@ namespace WaxWorx.Controllers
                 _logger.LogError(ex, "Failed to generate condition breakdown");
 
                 return View(new List<ConditionViewModel>
-        {
-            new ConditionViewModel
-            {
-                ConditionGroup = "ERR",
-                ConditionName = "Error",
-                AlbumCount = 0,
-                PercentageOfTotal = 0
-            }
-        });
+                {
+                    new ConditionViewModel
+                    {
+                        ConditionGroup = "ERR",
+                        ConditionName = "Error",
+                        AlbumCount = 0,
+                        PercentageOfTotal = 0
+                    }
+                });
             }
         }
 
