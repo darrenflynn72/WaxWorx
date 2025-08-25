@@ -92,6 +92,71 @@ namespace WaxWorx.UI.Controllers
             return RedirectToAction("Settings");
         }
 
+        [HttpPost]
+        public async Task<IActionResult> UpdateAlbumTrackListing()
+        {
+            var albums = _context.Albums
+                .Include(a => a.Tracks)
+                .Where(a => !string.IsNullOrWhiteSpace(a.MbId) && (a.Tracks == null || !a.Tracks.Any()))
+                .ToList();
+
+            const int delayMs = 1000; // throttle delay between requests
+
+            foreach (var album in albums)
+            {
+                try
+                {
+                    var mbid = album.MbId;
+                    var tracks = await _musicBrainzApiClient.GetTracksByMbIdAsync(mbid);
+
+                    if (tracks != null && tracks.Any())
+                    {
+                        var now = DateTime.UtcNow;
+                        var newTracks = tracks.Select(track => new Track
+                        {
+                            Name = track.Title,
+                            Duration = (int)track.Duration.TotalSeconds,
+                            TrackNumber = track.Position,
+                            AlbumId = album.Id,
+                            CreatedDate = now,
+                            CreatedBy = "admin",
+                            ModifiedDate = now,
+                            ModifiedBy = "admin"
+                        }).ToList();
+
+                        // Attach album if not tracked
+                        if (!_context.Albums.Local.Any(a => a.Id == album.Id))
+                        {
+                            _context.Albums.Attach(album);
+                        }
+
+                        _context.Tracks.AddRange(newTracks);
+
+                        album.ModifiedDate = now;
+                        album.ModifiedBy = "admin";
+                        _context.Albums.Update(album);
+
+                        await _context.SaveChangesAsync();
+                        _context.ChangeTracker.Clear(); // prevent memory bloat
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger?.LogWarning(ex, $"Failed to update tracklist for album ID {album.Id}: {album.Title}");
+                }
+
+                await Task.Delay(delayMs); // throttle to avoid API rate limits
+            }
+
+            return Ok("Tracklist update attempted.");
+        }
+
+        public static class DurationConverter
+        {
+            public static int ToSeconds(TimeSpan duration) => (int)duration.TotalSeconds;
+            public static TimeSpan ToTimeSpan(int seconds) => TimeSpan.FromSeconds(seconds);
+        }
+
         public async Task<IActionResult> UpdateAlbumCdnUrls()
         {
             // only pull albums that don't have an Image url
