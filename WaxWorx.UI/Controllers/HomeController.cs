@@ -46,7 +46,7 @@ namespace WaxWorx.Controllers
                 TotalRecords = _context.Albums.Count(),
                 TotalArtists = _context.Artists.Count(),
                 TotalGenres = _context.Genres.Count(),
-                //ConditionScore = CalculateConditionScore(), // or set a static value
+                ConditionScore = CalculateConditionScore(), // or set a static value
                 RecentAlbums = DummyRecentAlbums() // Safe default
                 //RecentAlbums = GetRecentAlbums()
             };
@@ -144,11 +144,20 @@ namespace WaxWorx.Controllers
                 .OrderByDescending(g => g.Count)
                 .ToList();
 
-            var result =  Json(genreCounts);
+            var result = Json(genreCounts);
             return result;
-
-            //return Json(genreCounts);
         }
+
+
+        public async Task<IActionResult> ViewConditions()
+        {
+            // View Conditions
+
+            var data = new List<ConditionViewModel>();
+
+            return View(data);
+        }
+        
 
         public async Task<IActionResult> Test()
         {
@@ -657,6 +666,50 @@ namespace WaxWorx.Controllers
             }
 
             return File(image.Data, image.ContentType);
+        }
+
+        public int CalculateConditionScore()
+        {
+            try
+            {
+                var gradeMap = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
+                {
+                    ["Mint"] = 100,
+                    ["Near Mint"] = 90,
+                    ["VG+"] = 80,
+                    ["VG"] = 70,
+                    ["G+"] = 60,
+                    ["G"] = 50,
+                    ["Fair"] = 30,
+                    ["Poor"] = 10
+                };
+
+                var conditions = _context.Albums
+                    .Select(a => a.Condition)
+                    .Where(c => !string.IsNullOrWhiteSpace(c) && c.Contains("/"))
+                    .ToList();
+
+                if (conditions.Count == 0) return 0;
+
+                var totalScore = conditions.Sum(c =>
+                {
+                    var parts = c.Split('/');
+                    var albumGrade = parts.ElementAtOrDefault(0)?.Trim();
+                    var sleeveGrade = parts.ElementAtOrDefault(1)?.Trim();
+
+                    var albumScore = gradeMap.GetValueOrDefault(albumGrade, 0);
+                    var sleeveScore = gradeMap.GetValueOrDefault(sleeveGrade, 0);
+
+                    return (albumScore + sleeveScore) / 2;
+                });
+
+                return totalScore / conditions.Count;
+            }
+            catch (Exception ex)
+            {
+                // Optional: log ex.Message or ex.ToString() for diagnostics
+                return 0;
+            }
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

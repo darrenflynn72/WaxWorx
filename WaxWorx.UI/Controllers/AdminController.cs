@@ -72,8 +72,6 @@ namespace WaxWorx.UI.Controllers
                 TempData["AlertMessage"] = "No file selected.";
 
                 return RedirectToAction("Settings"); // Or wherever your form lives
-
-                //return BadRequest("No file selected.");
             }
 
             using var stream = csvFile.OpenReadStream();
@@ -83,7 +81,6 @@ namespace WaxWorx.UI.Controllers
             TempData["AlertMessage"] = "Import Complete.";
 
             return RedirectToAction("Settings");
-            //return Ok("Import triggered.");
         }
     }
 }
