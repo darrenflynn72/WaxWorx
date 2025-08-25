@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WaxWorx.Data;
 
@@ -11,9 +12,11 @@ using WaxWorx.Data;
 namespace WaxWorx.Data.Migrations
 {
     [DbContext(typeof(InventoryDbContext))]
-    partial class InventoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250825065043_UpdateNullableFields_20250825")]
+    partial class UpdateNullableFields_20250825
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,15 +40,6 @@ namespace WaxWorx.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Color")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Condition")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("CopiesPressed")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Country")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CreatedBy")
@@ -75,6 +69,7 @@ namespace WaxWorx.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("MbId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ModifiedBy")
@@ -93,6 +88,7 @@ namespace WaxWorx.Data.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("ReleaseYear")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
@@ -182,6 +178,7 @@ namespace WaxWorx.Data.Migrations
                         .HasDefaultValue(true);
 
                     b.Property<string>("MbId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ModifiedBy")

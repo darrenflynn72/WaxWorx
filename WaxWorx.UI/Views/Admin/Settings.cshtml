@@ -4,6 +4,14 @@
     ViewData["Title"] = "Settings";
 }
 
+@if (TempData["AlertMessage"] != null)
+{
+    <script>
+        alert('@TempData["AlertMessage"]');
+    </script>
+}
+
+
 <div class="container-fluid bg-dark text-light py-4">
     <div class="d-flex align-items-center mb-4">
         <div class="summary-icon text-accent-blue me-3">

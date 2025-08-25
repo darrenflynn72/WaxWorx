@@ -127,9 +127,12 @@ canvas#genreChart {
     background-color: #1a1a1a;
     border-radius: 0.25rem;
     padding: 1rem;
-
-    max-height: 600px;
+    /*max-height: 600px;*/
     overflow-y: auto;
+
+
+    max-height: 1200px;
+    height: calc(40px * 26); /* Replace 7 with actual genre count if known */
 }
 
 /*#genreChart {

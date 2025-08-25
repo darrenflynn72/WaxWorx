@@ -15,9 +15,10 @@ namespace WaxWorx.Data.Entities
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+        public int AlbumId { get; set; }
         public string CoverUrl { get; set; } // Name of the file
-        public byte[] Data { get; set; } // Image as byte array
+        public byte[]? Data { get; set; } // Image as byte array
         public string ContentType { get; set; } // MIME type (e.g., "image/jpeg")
-        public ICollection<Album> Albums { get; set; } // Navigation property
+        public ICollection<Album>? Albums { get; set; } // Navigation property
     }
 }

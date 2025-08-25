@@ -4,6 +4,8 @@ using WaxWorx.Data;
 using WaxWorx.CoverArtApi;
 using WaxWorx.MusicBrainzApi;
 using WaxWorx.Shared.Configurations;
+using WaxWorx.Core.Import;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +28,19 @@ builder.Services.Configure<MusicBrainzApiConfig>(
 // services for MusicBrainz and CoverArt
 builder.Services.AddHttpClient<CoverArtApiClient>();
 builder.Services.AddHttpClient<MusicBrainzApiClient>();
+
+// register Csv Importer
+builder.Services.AddScoped<CsvImporter>();
+
+// Configure Serilog BEFORE building the host
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .Enrich.FromLogContext()
+    .WriteTo.Console()
+    .WriteTo.File("Logs/log-.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
+
+builder.Host.UseSerilog(); // Must be before builder.Build()
 
 var app = builder.Build();
 

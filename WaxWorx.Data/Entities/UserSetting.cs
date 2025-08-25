@@ -15,10 +15,12 @@ namespace WaxWorx.Data.Entities
         public int UserId { get; set; } = 1;
 
         [Required]
-        [MaxLength(20)]
-        public string Symbol { get; set; }
+        public string Name { get; set; }
 
-        [MaxLength(256)]
-        public string? DisplayName { get; set; }
+        [Required]
+        public string Description { get; set; }
+
+        [Required]
+        public string Value { get; set; }
     }
 }

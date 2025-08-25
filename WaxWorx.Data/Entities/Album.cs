@@ -14,16 +14,19 @@ namespace WaxWorx.Data.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Title { get; set; }
-        public string MbId { get; set; }
-        public string ReleaseYear { get; set; }
+        public string? MbId { get; set; }
+        public string? ReleaseYear { get; set; }
         public int ArtistId { get; set; } // Foreign key for Artist
-        public int GenreId { get; set; } // Foreign key for Genre
+        public int? GenreId { get; set; } // Foreign key for Genre
         public int? ImageId { get; set; } // Nullable foreign key
         public int? NoOfDiscs { get; set; }
         public string? Color { get; set; }
+        public string? Condition { get; set; }
+        public string? Country { get; set; }
         public bool? PictureDisc { get; set; }
         public bool? LimitedEdition { get; set; }
         public string? LimitedEditioNo { get; set; }
+        public int? CopiesPressed { get; set; }     
         public bool? Boxset { get; set; }
         public string? Notes { get; set; }
 
