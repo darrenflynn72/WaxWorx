@@ -15,22 +15,31 @@
             </div>
         </div>
         <div>
-            <a class="btn btn-custom-view mb-3" asp-action="Index" asp-controller="Home">← Back</a>
+            <a class="btn btn-custom-view mb-3" href="javascript:history.back()">← Back</a>
         </div>
     </div>
 
     <form asp-action="AddGenre" method="post">
         <!-- Hidden AUDIT Fields for Genre -->
-@*         <input type="hidden" name="Genre.CreatedBy" value="@Model.CreatedBy" />
+        @*         <input type="hidden" name="Genre.CreatedBy" value="@Model.CreatedBy" />
         <input type="hidden" name="Genre.CreatedDate" value="@Model.CreatedDate" />
         <input type="hidden" name="Genre.ModifiedBy" value="@Model.ModifiedBy" />
         <input type="hidden" name="Genre.ModifiedDate" value="@Model.ModifiedDate" /> *@
 
-        <div class="form-group">
-            <label for="Name">Genre Name</label>
-            <input type="text" id="Name" name="Name" class="form-control" value="@Model.Name" required />
+        <div class="row mb-3">
+            <div class="col">
+                <div class="form-group">
+                    <label for="Name">Genre Name</label>
+                    <input type="text" id="Name" name="Name" class="form-control" value="@Model.Name" required />
+                </div>
+            </div>
         </div>
 
-        <button type="submit" class="btn btn-custom-add">Add Genre</button>
+        <!-- Update Button -->
+        <div class="row">
+            <div class="col">
+                <button type="submit" class="btn btn-custom-edit">Add</button>
+            </div>
+        </div>
     </form>
 </div>

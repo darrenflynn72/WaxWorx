@@ -16,7 +16,7 @@
             </div>     
         </div>
         <div>
-            <a class="btn btn-custom-view mb-3" asp-action="Index" asp-controller="Home">← Back</a>
+            <a class="btn btn-custom-view mb-3" href="javascript:history.back()">← Back</a>
         </div>
     </div>
 
@@ -50,11 +50,16 @@
             </div>
         </div> *@
 
-        <div class="mb-3">
+        <div class="row mb-3">
             <label class="form-label text-light">Album Cover</label>
             <input type="file" name="CoverImage" accept="image/*" class="form-control" />
         </div>
 
-        <button type="submit" class="btn btn-custom-add">Add Album</button>
+        <!-- Update Button -->
+        <div class="row">
+            <div class="col">
+                <button type="submit" class="btn btn-custom-edit">Add</button>
+            </div>
+        </div>
     }
 </div>
