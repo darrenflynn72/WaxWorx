@@ -194,6 +194,7 @@ namespace WaxWorx.Controllers
                         Name = a.Genre.Name
                     } : null,
                     NoOfDiscs = a.NoOfDiscs,
+                    DatePurchased = a.DatePurchased,
                     Color = a.Color,
                     PictureDisc = a.PictureDisc,
                     LimitedEdition = a.LimitedEdition,
@@ -282,6 +283,7 @@ namespace WaxWorx.Controllers
                     GenreId = albumViewModel.Genre.Id,  // Use the nested GenreViewModel's Id
                     Image = image, // Associate the uploaded image
                     NoOfDiscs = albumViewModel.NoOfDiscs,
+                    DatePurchased = albumViewModel.DatePurchased,
                     Color = albumViewModel.Color,
                     PictureDisc = albumViewModel.PictureDisc,
                     LimitedEdition = albumViewModel.LimitedEdition,
@@ -348,6 +350,7 @@ namespace WaxWorx.Controllers
                     : null, // Generate ImageUrl or set to null if no image exists
 
                 NoOfDiscs = album.NoOfDiscs,
+                DatePurchased = album.DatePurchased,
                 Color = album.Color,
                 PictureDisc = album.PictureDisc,
                 LimitedEdition = album.LimitedEdition,
@@ -391,6 +394,7 @@ namespace WaxWorx.Controllers
                 existingAlbum.ArtistId = albumViewModel.Artist?.Id ?? existingAlbum.ArtistId; // Handle null ArtistViewModel
                 existingAlbum.GenreId = albumViewModel.Genre?.Id ?? existingAlbum.GenreId;   // Handle null GenreViewModel
                 existingAlbum.NoOfDiscs = albumViewModel.NoOfDiscs;
+                existingAlbum.DatePurchased = albumViewModel.DatePurchased;
                 existingAlbum.Color = albumViewModel.Color;
                 existingAlbum.PictureDisc = albumViewModel.PictureDisc;
                 existingAlbum.LimitedEdition = albumViewModel.LimitedEdition;

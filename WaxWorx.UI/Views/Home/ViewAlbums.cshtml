@@ -28,6 +28,7 @@
                 <th>Title</th>
                 <th>Genre</th>
                 <th>No. of Discs</th>
+                <th>Date Purchased</th>
                 <th>Color</th>
                 <th>Picture Disc</th>
                 <th>Limited Edition</th>
@@ -44,6 +45,7 @@
                     <td>@album.Title</td>
                     <td>@album.Genre?.Name</td>
                     <td>@album.NoOfDiscs</td>
+                    <td>@(album.DatePurchased.HasValue ? album.DatePurchased.Value.ToString("M/d/yyyy") : "")</td>
                     <td>@album.Color</td>
                     <td>
                         <div class="form-check">

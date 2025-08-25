@@ -16,6 +16,7 @@ namespace WaxWorx.UI.ViewModels
         [BindNever] // Prevent this property from being included in model binding
         public string? CoverUrl { get; set; } // For displaying the image 
         public int? NoOfDiscs { get; set; }
+        public DateTime? DatePurchased { get; set; }
         public string? Color { get; set; }
         public bool? PictureDisc { get; set; }
         public bool? LimitedEdition { get; set; }

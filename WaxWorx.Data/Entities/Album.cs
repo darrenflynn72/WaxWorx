@@ -20,6 +20,7 @@ namespace WaxWorx.Data.Entities
         public int? GenreId { get; set; } // Foreign key for Genre
         public int? ImageId { get; set; } // Nullable foreign key
         public int? NoOfDiscs { get; set; }
+        public DateTime? DatePurchased { get; set; }
         public string? Color { get; set; }
         public string? Condition { get; set; }
         public string? Country { get; set; }

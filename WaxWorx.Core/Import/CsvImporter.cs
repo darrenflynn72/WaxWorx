@@ -67,6 +67,7 @@ namespace WaxWorx.Core.Import
                             Condition = record.Condition,
                             Country = record.Country,
                             NoOfDiscs = ParseNullableInt(record.DiscCount),
+                            DatePurchased = ParseDatePurchased(record.DatePurchased),
                             ReleaseYear = ParseYear(record.DatePurchased),
                             LimitedEditioNo = record.LimitedEditionNumber,
                             CopiesPressed = ParseNullableInt(record.CopiesPressed),
@@ -179,6 +180,32 @@ namespace WaxWorx.Core.Import
                 "0" => false,
                 _ => null
             };
+        }
+
+        public static DateTime? ParseDatePurchased(string input)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(input))
+                    return null;
+
+                if (DateTime.TryParseExact(
+                    input.Trim(),
+                    "M/d/yyyy",
+                    CultureInfo.InvariantCulture,
+                    DateTimeStyles.None,
+                    out var parsed))
+                {
+                    return parsed;
+                }
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                // Optional: log ex.Message or tag the row for review
+                return null;
+            }
         }
 
         private bool? InferPictureDisc(string vinylColor)
