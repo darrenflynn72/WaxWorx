@@ -145,5 +145,69 @@ namespace WaxWorx.MusicBrainzApi
                 return null;
             }
         }
+
+        public async Task<List<TrackDto>> GetTracksByMbIdAsync(string mbid)
+        {
+            if (string.IsNullOrWhiteSpace(mbid))
+            {
+                throw new ArgumentException("MBID is required.", nameof(mbid));
+            }
+
+            // Real endpoint: https://musicbrainz.org/ws/2/release/{mbid}?inc=recordings&fmt=json
+            // use: https://localhost:7076/MusicBrainz/GetTracksByMbId?mbid=d07202e3-c6c5-4724-8f4b-842ee44e2184
+
+            try
+            {
+                var baseUrl = _config.BaseUrl; 
+                var endpointUrl = $"{baseUrl}/release/{mbid}?inc=recordings&fmt=json";
+
+                var response = await _httpClient.GetAsync(endpointUrl);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    // Optional: log response.StatusCode or endpointUrl for audit
+                    return new List<TrackDto>();
+                }
+
+                var json = await response.Content.ReadAsStringAsync();
+                var tracklist = ParseTracklistFromJson(json);
+
+                return tracklist;
+            }
+            catch (Exception ex)
+            {
+                // Optional: log ex.Message or ex.StackTrace for diagnostics
+                return new List<TrackDto>(); // Fail-safe fallback
+            }
+        }
+
+        private List<TrackDto> ParseTracklistFromJson(string json)
+        {
+            var result = new List<TrackDto>();
+
+            using var doc = JsonDocument.Parse(json);
+            var media = doc.RootElement.GetProperty("media");
+
+            foreach (var medium in media.EnumerateArray())
+            {
+                if (!medium.TryGetProperty("tracks", out var tracks)) continue;
+
+                foreach (var track in tracks.EnumerateArray())
+                {
+                    var title = track.GetProperty("title").GetString();
+                    var durationMs = track.TryGetProperty("length", out var lengthProp) ? lengthProp.GetInt32() : 0;
+
+                    result.Add(new TrackDto
+                    {
+                        Title = title,
+                        Duration = TimeSpan.FromMilliseconds(durationMs),
+                        Position = track.GetProperty("position").GetInt32()
+                    });
+                }
+            }
+
+            return result;
+        }
+
     }
 }

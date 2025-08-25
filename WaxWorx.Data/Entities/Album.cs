@@ -34,5 +34,6 @@ namespace WaxWorx.Data.Entities
         public Artist? Artist { get; set; } // Navigation property for Artist
         public Genre? Genre { get; set; }   // Navigation property for Genre
         public Image? Image { get; set; } // Nullable navigation property
+        public ICollection<Track> Tracks { get; set; } // Navigation: album has many tracks
     }
 }

@@ -33,7 +33,6 @@ namespace WaxWorx.UI.Controllers
             _musicBrainzApiClient = musicBrainzApiClient;
         }
 
-
         public async Task<IActionResult> TestMusicBrainzApi()
         {
             // Release: Thriller by Michael Jackson
@@ -44,6 +43,42 @@ namespace WaxWorx.UI.Controllers
             return Ok(data);
 
             //return Ok("TEST");
+        }
+
+        public async Task<IActionResult> GetTracksByMbId(string mbid)
+        {
+            // use: https://localhost:7076/MusicBrainz/GetTracksByMbId?mbid=d07202e3-c6c5-4724-8f4b-842ee44e2184
+
+            if (string.IsNullOrWhiteSpace(mbid))
+            {
+                return BadRequest("MbId is required.");
+            }
+
+            var tracks = await _musicBrainzApiClient.GetTracksByMbIdAsync(mbid);
+
+            if (tracks == null || !tracks.Any())
+            {
+                return NotFound($"No tracklist found for MbId: {mbid}");
+            }
+
+            // Optional: resolve album/artist metadata via separate call
+            //var metadata = await _musicBrainzApiClient.GetAlbumMetadataAsync(mbid);
+
+            var viewModel = new TracklistViewModel
+            {
+                //AlbumTitle = metadata?.AlbumTitle ?? "Unknown Album",
+                //ArtistName = metadata?.ArtistName ?? "Unknown Artist",
+                MbId = mbid,
+                RetrievedAtUtc = DateTime.UtcNow,
+                Tracks = tracks.Select(t => new TrackDto
+                {
+                    Title = t.Title,
+                    Duration = t.Duration,
+                    Position = t.Position
+                }).ToList()
+            };
+
+            return PartialView("_TracklistPartial", new List<TracklistViewModel> { viewModel });
         }
     }
 }

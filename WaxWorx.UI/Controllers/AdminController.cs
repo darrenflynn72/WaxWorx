@@ -94,11 +94,6 @@ namespace WaxWorx.UI.Controllers
 
         public async Task<IActionResult> UpdateAlbumCdnUrls()
         {
-            //var albums = _context.Albums
-            //    .Include(a => a.Artist)
-            //    .Include(a => a.Image)
-            //    .ToList();
-
             // only pull albums that don't have an Image url
             // no point polling API for 300+ albums
             var albums = _context.Albums
@@ -120,6 +115,8 @@ namespace WaxWorx.UI.Controllers
 
                     if (!string.IsNullOrWhiteSpace(mbid))
                     {
+                        album.MbId = mbid; // Persist MBID regardless of CDN outcome
+
                         var cdnUrl = await _coverArtApiClient.GetFrontCoverArtUrlAsync(mbid);
 
                         if (!string.IsNullOrWhiteSpace(cdnUrl))
@@ -146,12 +143,9 @@ namespace WaxWorx.UI.Controllers
 
                             album.ModifiedDate = now;
                             album.ModifiedBy = "admin";
-
-                            _context.Update(album);
-
-                            // Uncomment when ready to persist
-                            // await _context.SaveChangesAsync();
                         }
+
+                        _context.Update(album);
                     }
                 }
                 catch (Exception ex)

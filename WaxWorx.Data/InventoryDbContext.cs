@@ -28,23 +28,9 @@ namespace WaxWorx.Data
         public DbSet<Artist> Artists { get; set; }
         public DbSet<Genre> Genres { get; set; }
         public DbSet<Image> Images { get; set; }
+        public DbSet<Track> Tracks { get; set; }
 
         // Add other DbSet properties here
-
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
-        //    // Album to Artist (Many-to-One)
-        //    modelBuilder.Entity<Album>()
-        //            .HasOne(a => a.Artist)
-        //            .WithMany(artist => artist.Albums)
-        //            .HasForeignKey(a => a.ArtistId);
-
-        //    // Album to Genre (Many-to-One)
-        //    modelBuilder.Entity<Album>()
-        //        .HasOne(a => a.Genre)
-        //        .WithMany(genre => genre.Albums)
-        //        .HasForeignKey(a => a.GenreId);
-        //}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -84,6 +70,14 @@ namespace WaxWorx.Data
                 .WithMany(genre => genre.Albums)
                 .HasForeignKey(a => a.GenreId);
 
+            // Track relationships
+            modelBuilder.Entity<Track>()
+                .HasOne(t => t.Album)
+                .WithMany(a => a.Tracks)
+                .HasForeignKey(t => t.AlbumId)
+                .OnDelete(DeleteBehavior.Cascade); // Optional: cascade delete if album is removed
+
+
             // Ensure primary keys and auto-incrementing IDs for all entities
             modelBuilder.Entity<Album>()
                 .Property(a => a.Id)
@@ -95,6 +89,10 @@ namespace WaxWorx.Data
 
             modelBuilder.Entity<Genre>()
                 .Property(g => g.Id)
+                .ValueGeneratedOnAdd();
+
+            modelBuilder.Entity<Track>()
+                .Property(t => t.Id)
                 .ValueGeneratedOnAdd();
         }
     }

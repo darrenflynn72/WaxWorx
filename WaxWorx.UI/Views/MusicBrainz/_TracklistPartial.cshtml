@@ -1,0 +1,32 @@
+﻿@model List<WaxWorx.UI.ViewModels.TracklistViewModel>
+
+@if (Model?.Any() == true)
+{
+    foreach (var tracklist in Model)
+    {
+        if (tracklist?.Tracks?.Any() == true)
+        {
+            <div class="tracklist">
+                <h4>Tracklist for @tracklist.AlbumTitle</h4>
+                <ul>
+                    @foreach (var track in tracklist.Tracks.OrderBy(t => t.Position))
+                    {
+                        <li>
+                            <strong>@track.Position.</strong> @track.Title
+                            <span class="duration">(@track.Duration.ToString(@"mm\:ss"))</span>
+                        </li>
+                    }
+                </ul>
+                <small>Retrieved from MusicBrainz at @tracklist.RetrievedAtUtc.ToLocalTime()</small>
+            </div>
+        }
+        else
+        {
+            <p>No tracklist available for @tracklist.AlbumTitle.</p>
+        }
+    }
+}
+else
+{
+    <p>No tracklists found.</p>
+}
