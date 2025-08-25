@@ -1,0 +1,45 @@
+﻿@model List<WaxWorx.UI.ViewModels.ConditionViewModel>
+
+@{
+    ViewData["Title"] = "Collection Condition";
+}
+
+<div class="container-fluid bg-dark text-light py-4">
+    <div class="d-flex align-items-center mb-4">
+        <div class="summary-icon text-accent-blue me-3">
+            <i class="bi bi-person-fill fs-1"></i>
+        </div>
+        <h2 class="text-info mb-0">Conditions</h2>
+    </div>
+
+    <div class="d-flex justify-content-between mb-3">
+        <div>
+            Stuff here
+        </div>
+        <div>
+            <a class="btn btn-custom-view mb-3" href="javascript:history.back()">← Back</a>
+        </div>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Condition Group</th>
+                <th>Condition Name</th>
+                <th>Album Count</th>
+                <th>% of Collection</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.ConditionGroup</td>
+                    <td>@item.ConditionName</td>
+                    <td>@item.AlbumCount</td>
+                    <td>@item.PercentageOfTotal%</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -149,15 +149,15 @@ namespace WaxWorx.Controllers
         }
 
 
-        public async Task<IActionResult> ViewConditions()
-        {
-            // View Conditions
+        //public async Task<IActionResult> ViewConditions()
+        //{
+        //    // View Conditions
 
-            var data = new List<ConditionViewModel>();
+        //    var data = new List<ConditionViewModel>();
 
-            return View(data);
-        }
-        
+        //    return View(data);
+        //}
+
 
         public async Task<IActionResult> Test()
         {
@@ -674,41 +674,140 @@ namespace WaxWorx.Controllers
             {
                 var gradeMap = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase)
                 {
-                    ["Mint"] = 100,
-                    ["Near Mint"] = 90,
+                    ["M"] = 100,
+                    ["NM"] = 90,
                     ["VG+"] = 80,
                     ["VG"] = 70,
                     ["G+"] = 60,
                     ["G"] = 50,
-                    ["Fair"] = 30,
-                    ["Poor"] = 10
+                    ["F"] = 30,
+                    ["P"] = 10
                 };
 
                 var conditions = _context.Albums
                     .Select(a => a.Condition)
-                    .Where(c => !string.IsNullOrWhiteSpace(c) && c.Contains("/"))
+                    .Where(c => !string.IsNullOrWhiteSpace(c))
                     .ToList();
 
                 if (conditions.Count == 0) return 0;
 
                 var totalScore = conditions.Sum(c =>
                 {
-                    var parts = c.Split('/');
-                    var albumGrade = parts.ElementAtOrDefault(0)?.Trim();
-                    var sleeveGrade = parts.ElementAtOrDefault(1)?.Trim();
-
-                    var albumScore = gradeMap.GetValueOrDefault(albumGrade, 0);
-                    var sleeveScore = gradeMap.GetValueOrDefault(sleeveGrade, 0);
-
-                    return (albumScore + sleeveScore) / 2;
+                    var albumCode = c.Split('/')[0].Trim();
+                    return gradeMap.GetValueOrDefault(albumCode, 0);
                 });
 
-                return totalScore / conditions.Count;
+                return (int)Math.Round((double)totalScore / conditions.Count, MidpointRounding.AwayFromZero);
             }
             catch (Exception ex)
             {
-                // Optional: log ex.Message or ex.ToString() for diagnostics
                 return 0;
+            }
+        }
+
+        public IActionResult ViewCollectionCondition()
+        {
+            try
+            {
+                var totalAlbums = _context.Albums.Count();
+
+                var gradeMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+                {
+                    ["M"] = "Mint",
+                    ["Mint"] = "Mint",
+                    ["NM"] = "Near Mint",
+                    ["Near Mint"] = "Near Mint",
+                    ["VG+"] = "Very Good+",
+                    ["VG"] = "Very Good",
+                    ["G"] = "Good",
+                    ["F"] = "Fair",
+                    ["P"] = "Poor"
+                };
+
+                var knownGrades = new List<string>
+        {
+            "Mint", "Near Mint", "Very Good+", "Very Good", "Good", "Fair", "Poor", "U"
+        };
+
+                var canonicalCodeMap = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+                {
+                    ["Mint"] = "M",
+                    ["Near Mint"] = "NM",
+                    ["Very Good+"] = "VG+",
+                    ["Very Good"] = "VG",
+                    ["Good"] = "G",
+                    ["Fair"] = "F",
+                    ["Poor"] = "P",
+                    ["U"] = "U"
+                };
+
+                var displayNames = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+                {
+                    ["Mint"] = "Mint",
+                    ["Near Mint"] = "Near Mint",
+                    ["Very Good+"] = "Very Good+",
+                    ["Very Good"] = "Very Good",
+                    ["Good"] = "Good",
+                    ["Fair"] = "Fair",
+                    ["Poor"] = "Poor",
+                    ["U"] = "Unknown"
+                };
+
+                var rawConditions = _context.Albums
+                    .Select(a => new { a.Condition })
+                    .AsEnumerable()
+                    .Select(a =>
+                    {
+                        var rawCode = string.IsNullOrWhiteSpace(a.Condition)
+                            ? "U"
+                            : a.Condition.Split('/')[0].Trim();
+
+                        var normalized = gradeMap.TryGetValue(rawCode, out var mapped)
+                            ? mapped
+                            : "U";
+
+                        return new { RawCode = rawCode, Normalized = normalized };
+                    })
+                    .GroupBy(x => x.Normalized)
+                    .ToDictionary(
+                        g => g.Key,
+                        g => new
+                        {
+                            Count = g.Count(),
+                            RawCodes = g.Select(x => x.RawCode).Distinct().ToList()
+                        });
+
+                var viewModel = knownGrades
+                    .Select(grade => new ConditionViewModel
+                    {
+                        ConditionName = displayNames.ContainsKey(grade) ? displayNames[grade] : grade,
+                        ConditionGroup = canonicalCodeMap.ContainsKey(grade)
+                            ? canonicalCodeMap[grade]
+                            : "U",
+                        AlbumCount = rawConditions.ContainsKey(grade) ? rawConditions[grade].Count : 0,
+                        PercentageOfTotal = totalAlbums == 0
+                            ? 0
+                            : Math.Round((double)(rawConditions.ContainsKey(grade) ? rawConditions[grade].Count : 0) / totalAlbums * 100, 2)
+                    })
+                    .OrderByDescending(vm => vm.AlbumCount)
+                    .ToList();
+
+                return View(viewModel);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to generate condition breakdown");
+
+                return View(new List<ConditionViewModel>
+        {
+            new ConditionViewModel
+            {
+                ConditionGroup = "ERR",
+                ConditionName = "Error",
+                AlbumCount = 0,
+                PercentageOfTotal = 0
+            }
+        });
             }
         }
 
