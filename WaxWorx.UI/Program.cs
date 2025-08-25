@@ -14,6 +14,9 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<InventoryDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.Configure<AdminSettingsConfig>(
+    builder.Configuration.GetSection("AdminSettingsConfig"));
+
 builder.Services.Configure<CoverArtApiConfig>(
     builder.Configuration.GetSection("CoverArtApiConfig"));
 

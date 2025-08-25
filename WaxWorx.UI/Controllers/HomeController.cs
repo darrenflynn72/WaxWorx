@@ -54,18 +54,13 @@ namespace WaxWorx.Controllers
             return View(tempView);
         }
 
-        public IActionResult Login()
+        public IActionResult Template()
         {
-            // Login
+            // Template
 
-            return Ok("Login View");
-        }
+            var data = new TemplateViewModel();
 
-        public IActionResult Settings()
-        {
-            // Settings
-
-            return Ok("Settings View");
+            return View(data);
         }
 
         private List<AlbumSummary> DummyRecentAlbums()
