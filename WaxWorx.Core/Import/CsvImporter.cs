@@ -33,6 +33,10 @@ namespace WaxWorx.Core.Import
                 });
 
                 var records = csv.GetRecords<VinylImportDto>().ToList();
+
+                var artistCache = new Dictionary<string, Artist>(StringComparer.OrdinalIgnoreCase);
+                var genreCache = new Dictionary<string, Genre>(StringComparer.OrdinalIgnoreCase);
+
                 int successCount = 0;
                 int failureCount = 0;
 
@@ -40,8 +44,19 @@ namespace WaxWorx.Core.Import
                 {
                     try
                     {
-                        var artist = GetOrCreateArtist(record.Artist);
-                        var genre = GetOrCreateGenre(record.Genre);
+                        // Deduplicate Artist
+                        if (!artistCache.TryGetValue(record.Artist, out var artist))
+                        {
+                            artist = GetOrCreateArtist(record.Artist);
+                            artistCache[record.Artist] = artist;
+                        }
+
+                        // Deduplicate Genre
+                        if (!genreCache.TryGetValue(record.Genre, out var genre))
+                        {
+                            genre = GetOrCreateGenre(record.Genre);
+                            genreCache[record.Genre] = genre;
+                        }
 
                         var newAlbum = new Album
                         {
@@ -63,6 +78,10 @@ namespace WaxWorx.Core.Import
                             CreatedBy = "admin"
                         };
 
+                        newAlbum.IsActive = true;
+                        newAlbum.CreatedDate = DateTime.Now;
+                        newAlbum.CreatedBy = "admin";
+
                         _context.Albums.Add(newAlbum);
                         successCount++;
                     }
@@ -79,7 +98,7 @@ namespace WaxWorx.Core.Import
             catch (Exception ex)
             {
                 _logger.LogCritical(ex, "Fatal error during CSV import.");
-                throw; // Optional: rethrow if you want controller-level handling
+                throw;
             }
         }
 
@@ -93,6 +112,7 @@ namespace WaxWorx.Core.Import
 
             var newArtist = new Artist { Name = name };
 
+            newArtist.IsActive = true;
             newArtist.CreatedDate = DateTime.Now;
             newArtist.CreatedBy = "admin";
 
@@ -112,6 +132,7 @@ namespace WaxWorx.Core.Import
 
             var newGenre = new Genre { Name = name };
 
+            newGenre.IsActive = true;
             newGenre.CreatedDate = DateTime.Now;
             newGenre.CreatedBy = "admin";
 
@@ -145,9 +166,14 @@ namespace WaxWorx.Core.Import
 
             return input.Trim().ToLower() switch
             {
+                // true values
+                "y" => true,
                 "yes" => true,
                 "true" => true,
                 "1" => true,
+
+                // false values
+                "n" => false,
                 "no" => false,
                 "false" => false,
                 "0" => false,
