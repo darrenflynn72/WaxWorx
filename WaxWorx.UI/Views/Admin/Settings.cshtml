@@ -43,15 +43,23 @@
 
     <div class="row">
         <div class="col-auto">
+            <label class="form-label text-light fw-bold">Update Album CDN URLs</label>
+        </div>
+        <div class="col">
+            <form asp-controller="Admin" asp-action="UpdateAlbumCdnUrls" method="post">
+                <button type="submit" class="btn btn-custom-view btn-primary">Update CDN URLs</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-auto">
             <label class="form-label text-light fw-bold">Other Stuff Here</label>
         </div>
         <div class="col">
-
             <form asp-controller="Admin" asp-action="Other" method="post">
                 <button type="submit" class="btn btn-custom-view btn-primary">Do Other</button>
             </form>
-
-@*             <a class="btn btn-secondary" asp-action="OtherStuff" asp-controller="Admin">Execute</a> *@
         </div>
     </div>
 </div>

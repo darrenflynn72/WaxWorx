@@ -18,7 +18,7 @@ namespace WaxWorx.Data.Entities
         public int AlbumId { get; set; }
         public string CoverUrl { get; set; } // Name of the file
         public byte[]? Data { get; set; } // Image as byte array
-        public string ContentType { get; set; } // MIME type (e.g., "image/jpeg")
+        public string? ContentType { get; set; } // MIME type (e.g., "image/jpeg")
         public ICollection<Album>? Albums { get; set; } // Navigation property
     }
 }

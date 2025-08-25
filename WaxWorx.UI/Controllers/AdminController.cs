@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using WaxWorx.Controllers;
 using WaxWorx.Core;
 using WaxWorx.Core.Import;
 using WaxWorx.CoverArtApi;
 using WaxWorx.Data;
+using WaxWorx.Data.Entities;
 using WaxWorx.MusicBrainzApi;
 using WaxWorx.Shared.Configurations;
 using WaxWorx.UI.ViewModels;
@@ -17,21 +19,28 @@ namespace WaxWorx.UI.Controllers
         private readonly InventoryDbContext _context;
 
         // configs
-        private readonly AdminSettingsConfig _adminSettingsConfig;
+        private readonly CoverArtApiConfig _configCoverArtApi;
+        private readonly MusicBrainzApiConfig _configMusicBrainzApi;
+        private readonly AdminSettingsConfig _configAdminSettings;
 
         // external APIs
-        //private readonly CoverArtApiClient _coverArtApiClient;
+        private readonly CoverArtApiClient _coverArtApiClient;
+        private readonly MusicBrainzApiClient _musicBrainzApiClient;
 
         // CSV Importer
         private readonly CsvImporter _importer;
 
         public AdminController(ILogger<AdminController> logger, InventoryDbContext context,
-                                IOptions<CoverArtApiConfig> configCoverArtApi, IOptions<AdminSettingsConfig> adminSettingsConfig,
-                                CsvImporter importer)
+                                IOptions<CoverArtApiConfig> configCoverArtApi, IOptions<MusicBrainzApiConfig> configMusicBrainzApi, IOptions<AdminSettingsConfig> configAdminSettings,
+                                CoverArtApiClient coverArtApiClient, MusicBrainzApiClient musicBrainzApiClient, CsvImporter importer)
         {
             _logger = logger;
             _context = context;
-            _adminSettingsConfig = adminSettingsConfig.Value;
+            _configCoverArtApi = configCoverArtApi.Value;
+            _configMusicBrainzApi = configMusicBrainzApi.Value;
+            _configAdminSettings = configAdminSettings.Value;
+            _coverArtApiClient = coverArtApiClient;
+            _musicBrainzApiClient = musicBrainzApiClient;
             _importer = importer;
         }
 
@@ -81,6 +90,113 @@ namespace WaxWorx.UI.Controllers
             TempData["AlertMessage"] = "Import Complete.";
 
             return RedirectToAction("Settings");
+        }
+
+        public async Task<IActionResult> UpdateAlbumCdnUrls()
+        {
+            //var albums = _context.Albums
+            //    .Include(a => a.Artist)
+            //    .Include(a => a.Image)
+            //    .ToList();
+
+            // only pull albums that don't have an Image url
+            // no point polling API for 300+ albums
+            var albums = _context.Albums
+                .Include(a => a.Artist)
+                .Include(a => a.Image)
+                .Where(a => a.Image == null || string.IsNullOrEmpty(a.Image.CoverUrl))
+                .ToList();
+
+            const int delayMs = 1000; // throttle delay between requests
+
+            foreach (var album in albums)
+            {
+                try
+                {
+                    var artistName = NormalizeArtistName(album.Artist?.Name);
+                    var albumTitle = album.Title;
+
+                    var mbid = await _musicBrainzApiClient.GetMBIDAsync(albumTitle, artistName);
+
+                    if (!string.IsNullOrWhiteSpace(mbid))
+                    {
+                        var cdnUrl = await _coverArtApiClient.GetFrontCoverArtUrlAsync(mbid);
+
+                        if (!string.IsNullOrWhiteSpace(cdnUrl))
+                        {
+                            var now = DateTime.UtcNow;
+
+                            if (album.Image == null)
+                            {
+                                album.Image = new Image
+                                {
+                                    CoverUrl = cdnUrl,
+                                    CreatedDate = now,
+                                    CreatedBy = "admin",
+                                    ModifiedDate = now,
+                                    ModifiedBy = "admin"
+                                };
+                            }
+                            else
+                            {
+                                album.Image.CoverUrl = cdnUrl;
+                                album.Image.ModifiedDate = now;
+                                album.Image.ModifiedBy = "admin";
+                            }
+
+                            album.ModifiedDate = now;
+                            album.ModifiedBy = "admin";
+
+                            _context.Update(album);
+
+                            // Uncomment when ready to persist
+                            // await _context.SaveChangesAsync();
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Optional: log or tag the failed album for review
+                    _logger?.LogWarning(ex, $"Failed to update CDN for album ID {album.Id}: {album.Title}");
+                }
+
+                await Task.Delay(delayMs); // throttle to avoid API rate limits
+            }
+
+            // Uncomment when ready to persist
+            await _context.SaveChangesAsync();
+
+            return Ok("CDN URLs update attempted.");
+        }
+
+        public string NormalizeArtistName(string rawName)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(rawName))
+                {
+                    return "";
+                }
+
+                var parts = rawName.Split(',');
+
+                if (parts.Length == 2)
+                {
+                    var first = parts[1].Trim();
+                    var last = parts[0].Trim();
+
+                    return $"{first} {last}";
+                }
+
+                return rawName.Trim();
+            }
+            catch (Exception ex)
+            {
+                // Optional: log exception for audit trace
+                _logger?.LogWarning(ex, $"NormalizeArtistName failed for input: '{rawName}'");
+
+                return rawName ?? "";
+            }
         }
     }
 }
