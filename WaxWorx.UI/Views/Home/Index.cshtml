@@ -169,6 +169,14 @@
             fetch('@Url.Action("GetGenreStats", "Home")')
                 .then(response => response.json())
                 .then(data => {
+                    // Check if data is empty to prevent errors
+                    if (!data || data.length === 0) {
+                        return;
+                    }
+
+                    // Get the maximum value from the 'count' property in your dataset
+                    const maxCount = Math.max(...data.map(item => item.count));
+
                     var dataTable = new google.visualization.DataTable();
                     dataTable.addColumn('string', 'Genre');
                     dataTable.addColumn('number', 'Count');
@@ -182,21 +190,23 @@
                         hAxis: {
                             title: 'Number of Albums',
                             textStyle: { color: '#E0E0E0' },
-                            titleTextStyle: { color: '#E0E0E0' }
+                            titleTextStyle: { color: '#E0E0E0' },
+                            // Set the max value of the axis to match the largest data point
+                            maxValue: maxCount
                         },
                         vAxis: {
                             title: 'Genre',
-                            textStyle: { color: 'E0E0E0' },
-                            titleTextStyle: { color: 'E0E0E0' }
+                            textStyle: { color: '#E0E0E0' },
+                            titleTextStyle: { color: '#E0E0E0' }
                         },
                         legend: 'none',
-                        backgroundColor: '#121212', //'dark theme background',
+                        backgroundColor: '#121212',
                         chartArea: {
-                            backgroundColor: '#121212', //'dark theme background',
-                            top: 20,    // Reduce top margin
-                            left: 100,  // Adjust left margin to accommodate labels
-                            width: '80%', // Make the chart area wider
-                            height: '80%' // Make the chart area taller
+                            backgroundColor: '#121212',
+                            top: 20,
+                            left: 100,
+                            width: '80%',
+                            height: '80%'
                         },
                         series: {
                             0: { color: '#17a2b8' }
