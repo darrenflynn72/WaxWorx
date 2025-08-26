@@ -72,11 +72,19 @@
     </div>
 
     <!-- Collection Stats -->
-    <div class="row mb-4">
+@*     <div class="row mb-4">
         <div class="col-md-8">
             <h4 class="text-info">Collection Stats</h4>
             <canvas id="genreChart"></canvas>
+        </div> *@
+
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h4 class="text-info">Collection Stats</h4>
+            <div id="chart_container" style="width: 100%; height: 500px;"></div>
         </div>
+
+        
 
         <!-- Recently Added -->
         <div class="col-md-4">
@@ -147,122 +155,58 @@
             </div>
         </div> *@
     </div>
+</div>
 
 
+@* Google Charts Script *@
+@section Scripts {
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
 
-    <!-- Scripts -->
-    @section Scripts {
-        <script>
-            fetch('/Home/GetGenreStats')
-                .then(res => res.json())
+        function drawChart() {
+            fetch('@Url.Action("GetGenreStats", "Home")')
+                .then(response => response.json())
                 .then(data => {
-                    console.log("Genre stats:", data);
-                    console.table(data);
+                    var dataTable = new google.visualization.DataTable();
+                    dataTable.addColumn('string', 'Genre');
+                    dataTable.addColumn('number', 'Count');
 
-                    const labels = data.map(g => g.genre);
-                    const counts = data.map(g => parseInt(g.count, 10) || 0);
-
-                    const canvas = document.getElementById('genreChart');
-                    if (!canvas) {
-                        console.error("Canvas element #genreChart not found.");
-                        return;
-                    }
-
-                    // Dynamically scale canvas height based on number of genres
-                    canvas.height = labels.length * 18; // ~28px per genre
-
-                    const ctx = canvas.getContext('2d');
-
-                    if (window.genreChart && typeof window.genreChart.destroy === 'function') {
-                        window.genreChart.destroy();
-                    }
-
-                    window.genreChart = new Chart(ctx, {
-                        type: 'bar',
-                        data: {
-                            labels: labels,
-                            datasets: [{
-                                label: 'Records by Genre',
-                                data: counts,
-                                backgroundColor: '#17a2b8',
-                                borderColor: '#17a2b8',
-                                borderWidth: 1,
-                                barThickness: 24,           // Fixed bar heightc// was 44
-                                categoryPercentage: 0.5,    // Shrinks each category slot
-                                barPercentage: 1.0          // Fills most of the slot with the bar
-                            }]
-                        },
-                        options: {
-                            indexAxis: 'y',
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            scales: {
-                                x: {
-                                    beginAtZero: true,
-                                    ticks: {
-                                        precision: 0,
-                                        font: {
-                                            size: 14 // bottom scale (count)
-                                        }
-                                    }
-                                },
-                                y: {
-                                    ticks: {
-                                        font: {
-                                            size: 18 // vertical scale (genre)
-                                        },
-                                        maxRotation: 0,
-                                        minRotation: 0
-                                    }
-                                }
-                            },
-                            plugins: {
-                                legend: {
-                                    position: 'bottom',
-                                    labels: {
-                                        font: {
-                                            size: 12
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-
+                    data.forEach(item => {
+                        dataTable.addRow([item.genre, item.count]);
                     });
 
-                    console.log("Chart instance:", window.genreChart);
-                })
-                .catch(err => {
-                    console.error("Error fetching genre stats:", err);
-                });
-        </script>
-    }
-
-
-
-
-
-    @*         <script>
-                const ctx = document.getElementById('genreChart').getContext('2d');
-                const genreChart = new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: @Html.Raw(Json.Serialize(Model.GenreLabels)),
-                        datasets: [{
-                            label: 'Records by Genre',
-                            data: @Html.Raw(Json.Serialize(Model.GenreCounts)),
-                            backgroundColor: 'rgba(0, 255, 255, 0.6)',
-                            borderColor: 'rgba(0, 255, 255, 1)',
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        scales: {
-                            y: { beginAtZero: true }
+                    var options = {
+                        title: 'Top 10 Album Genres',
+                        hAxis: {
+                            title: 'Number of Albums',
+                            textStyle: { color: '#E0E0E0' },
+                            titleTextStyle: { color: '#E0E0E0' }
+                        },
+                        vAxis: {
+                            title: 'Genre',
+                            textStyle: { color: 'E0E0E0' },
+                            titleTextStyle: { color: 'E0E0E0' }
+                        },
+                        legend: 'none',
+                        backgroundColor: '#121212', //'dark theme background',
+                        chartArea: {
+                            backgroundColor: '#121212', //'dark theme background',
+                            top: 20,    // Reduce top margin
+                            left: 100,  // Adjust left margin to accommodate labels
+                            width: '80%', // Make the chart area wider
+                            height: '80%' // Make the chart area taller
+                        },
+                        series: {
+                            0: { color: '#17a2b8' }
                         }
-                    }
-                });
-            </script> *@
+                    };
 
-
+                    var chart = new google.visualization.BarChart(document.getElementById('chart_container'));
+                    chart.draw(dataTable, options);
+                })
+                .catch(error => console.error('Error fetching data:', error));
+        }
+    </script>
+}
