@@ -142,7 +142,7 @@ namespace WaxWorx.Controllers
                     Count = g.Count()
                 })
                 .OrderByDescending(g => g.Count)
-                .Take(10) // JUST RETURN TOP 10 GENRES
+                .Take(6) // JUST RETURN TOP 6 GENRES
                 .ToList();
 
             var result = Json(genreCounts);
