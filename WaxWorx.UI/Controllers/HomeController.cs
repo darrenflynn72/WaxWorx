@@ -1,4 +1,6 @@
+using System.ComponentModel;
 using System.Diagnostics;
+using System.Reflection;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -8,6 +10,7 @@ using WaxWorx.Data.Entities;
 using WaxWorx.Models;
 using WaxWorx.MusicBrainzApi;
 using WaxWorx.Shared.Configurations;
+using WaxWorx.Shared.Enums;
 using WaxWorx.UI.ViewModels;
 
 namespace WaxWorx.Controllers
@@ -148,17 +151,6 @@ namespace WaxWorx.Controllers
             var result = Json(genreCounts);
             return result;
         }
-
-
-        //public async Task<IActionResult> ViewConditions()
-        //{
-        //    // View Conditions
-
-        //    var data = new List<ConditionViewModel>();
-
-        //    return View(data);
-        //}
-
 
         public async Task<IActionResult> Test()
         {
@@ -814,6 +806,58 @@ namespace WaxWorx.Controllers
                     }
                 });
             }
+        }
+
+        // Artist Dropdown Options Endpoint
+        public IActionResult GetArtistDropdownOptions()
+        {
+            var artistOptions = _context.Artists
+                .OrderBy(a => a.Name)
+                .Select(a => new
+                {
+                    Value = a.Id,
+                    Label = a.Name
+                })
+                .ToList();
+
+            return Json(artistOptions);
+        }
+
+        // Genre Dropdown Options Endpoint
+        public IActionResult GetGenreDropdownOptions()
+        {
+            var genreOptions = _context.Genres
+                .OrderBy(g => g.Name)
+                .Select(g => new
+                {
+                    Value = g.Id,
+                    Label = g.Name
+                })
+                .ToList();
+
+            return Json(genreOptions);
+        }
+
+        // Condition Dropdown Options Endpoint
+        public IActionResult GetConditionDropdownOptions()
+        {
+            var conditionOptions = Enum.GetValues(typeof(ConditionEnum))
+               .Cast<ConditionEnum>()
+               .Select(e => new
+               {
+                   Value = (int)e,
+                   Label = GetDescription(e) //e.GetDescription() 
+               })
+               .ToList();
+
+            return Json(conditionOptions);
+        }
+
+        public string GetDescription(Enum value)
+        {
+            var field = value.GetType().GetField(value.ToString());
+            var attr = field?.GetCustomAttribute<DescriptionAttribute>();
+            return attr?.Description ?? value.ToString();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
