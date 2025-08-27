@@ -10,18 +10,18 @@ namespace WaxWorx.Shared.Enums
     public enum ConditionEnum
     {
         [Description("Mint")]
-        Mint = 0,
+        Mint = 1,
         [Description("Near Mint")]
-        NearMint = 1,
+        NearMint = 2,
         [Description("Very Good+")]
-        VeryGoodPlus = 2,
+        VeryGoodPlus = 3,
         [Description("Very Good")]
-        VeryGood = 3,
+        VeryGood = 4,
         [Description("Good")]
-        Good = 4,
+        Good = 5,
         [Description("Fair")]
-        Fair = 5,
+        Fair = 6,
         [Description("Poor")]
-        Poor = 6
+        Poor = 7
     }
 }

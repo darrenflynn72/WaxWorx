@@ -820,7 +820,9 @@ namespace WaxWorx.Controllers
                 })
                 .ToList();
 
-            return Json(artistOptions);
+            var result = Json(artistOptions);
+
+            return Json(result);
         }
 
         // Genre Dropdown Options Endpoint
@@ -835,7 +837,9 @@ namespace WaxWorx.Controllers
                 })
                 .ToList();
 
-            return Json(genreOptions);
+            var result =  Json(genreOptions);
+
+            return Json(result);
         }
 
         // Condition Dropdown Options Endpoint
@@ -850,7 +854,9 @@ namespace WaxWorx.Controllers
                })
                .ToList();
 
-            return Json(conditionOptions);
+            var result = Json(conditionOptions);
+
+            return Json(result);
         }
 
         public string GetDescription(Enum value)
