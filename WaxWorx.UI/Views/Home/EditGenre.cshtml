@@ -22,18 +22,18 @@
     <form asp-action="EditGenre" method="post">
         <input type="hidden" name="Id" value="@Model.Id" />
 
-        <!-- Name -->
         <div class="row mb-3">
+            <!-- Name -->
             <div class="col">
                 <div class="form-group">
-                    <label for="Name">Genre Name</label>
+                    <label class="form-label text-light" for="Name">Genre Name</label>
                     <input type="text" id="Name" name="Name" class="form-control" value="@Model.Name" required />
                 </div>
             </div>
         </div>
 
-        <!-- Update Button -->
         <div class="row">
+            <!-- Update Button -->
             <div class="col">
                 <button type="submit" class="btn btn-custom-edit">Update</button>
             </div>
