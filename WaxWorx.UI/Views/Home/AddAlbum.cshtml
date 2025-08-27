@@ -13,7 +13,7 @@
                     <i class="bi bi-disc-fill fs-1"></i>
                 </div>
                 <h2 class="text-info mb-4">Add Album</h2>
-            </div>     
+            </div>
         </div>
         <div>
             <a class="btn btn-custom-view mb-3" href="javascript:history.back()">← Back</a>
@@ -29,35 +29,103 @@
                 <label class="form-label text-light">Title</label>
                 @Html.TextBoxFor(m => m.Title, new { @class = "form-control", placeholder = "Album Title" })
             </div>
+
             <div class="col-md-6">
-                <label class="form-label text-light">Artist</label>
-                @Html.TextBoxFor(m => m.Artist, new { @class = "form-control", placeholder = "Artist Name" })
+                <label class="form-label text-light">Release Year</label>
+                @Html.TextBoxFor(m => m.ReleaseYear, new { @class = "form-control", type = "number", min = "1900", max = "2099" })
             </div>
         </div>
 
-        @*         <div class="row mb-3">
-            <div class="col-md-4">
-                <label class="form-label text-light">Year</label>
-                @Html.TextBoxFor(m => m.Year, new { @class = "form-control", type = "number", min = "1900", max = "2099" })
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label class="form-label text-light">Artist</label>
+                @Html.DropDownListFor(m => m.Artist.Id, Model.ArtistOptions, "Select Artist", new { @class = "form-control" })
             </div>
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <label class="form-label text-light">Genre</label>
-                @Html.DropDownListFor(m => m.Genre, Model.GenreOptions, "Select Genre", new { @class = "form-control" })
+                @Html.DropDownListFor(m => m.Genre.Id, Model.GenreOptions, "Select Genre", new { @class = "form-control" })
             </div>
-            <div class="col-md-4">
-                <label class="form-label text-light">Condition</label>
-                @Html.DropDownListFor(m => m.Condition, Model.ConditionOptions, "Select Condition", new { @class = "form-control" })
-            </div>
-        </div> *@
+        </div>
 
         <div class="row mb-3">
-            <label class="form-label text-light">Album Cover</label>
-            <input type="file" name="CoverImage" accept="image/*" class="form-control" />
+            <div class="col-md-6">
+                <label class="form-label text-light">No Of Discs</label>
+                @Html.TextBoxFor(m => m.NoOfDiscs, new { @class = "form-control", type = "number", min = "1", max = "30" })
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label text-light">Color</label>
+                @Html.TextBoxFor(m => m.Color, new { @class = "form-control", type = "number", min = "1900", max = "2099" })
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label class="form-label text-light">Condition</label>
+                @Html.DropDownListFor(m => m.Condition.ConditionName, Model.ConditionOptions, "Select Condition", new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <div class="form-check">
+                    <label class="form-check-label text-light">Picture Disc</label>
+                    @Html.CheckBoxFor(m => m.PictureDisc, new { @class = "form-check-input" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-check">
+                    <label class="form-check-label text-light">Boxset</label>
+                    @Html.CheckBoxFor(m => m.Boxset, new { @class = "form-check-input" })
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <div class="form-check">
+                    <label class="form-check-label text-light">Limited Edition</label>
+                    @Html.CheckBoxFor(m => m.LimitedEdition, new { @class = "form-check-input" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label text-light">Limited Edition No.</label>
+                @Html.TextBoxFor(m => m.LimitedEditioNo, new { @class = "form-control", type = "number", min = "1900", max = "2099" })
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-3">
+                <div class="me-3 p-1">
+                    <img src="m.CoverUrl"
+                         class="d-block border border-info rounded"
+                         style="width:120px; height:120px;" />
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label text-light">Album Cover</label>
+                <input type="file" name="CoverImage" accept="image/*" class="form-control" />
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label class="form-label text-light">Date Purchased</label>
+                @Html.TextBoxFor(m => m.DatePurchased, new { @class = "form-control", placeholder = "Date Purchased" })
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label class="form-label text-light">Notes</label>
+                @Html.TextBoxFor(m => m.Notes, new { @class = "form-control", placeholder = "Notes" })
+            </div>
         </div>
 
         <!-- Update Button -->
         <div class="row">
-            <div class="col">
+            <div class="col-md-3">
                 <button type="submit" class="btn btn-custom-edit">Add</button>
             </div>
         </div>

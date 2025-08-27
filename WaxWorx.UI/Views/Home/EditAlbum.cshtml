@@ -130,8 +130,20 @@
                 <div class="form-check">
                     <!-- Hidden field to ensure a value is submitted when checkbox is unchecked -->
                     <input type="hidden" name="PictureDisc" value="false" />
-                    <input type="checkbox" id="PictureDisc" name="PictureDisc" class="form-check-input" @(Model.PictureDisc.HasValue && Model.PictureDisc.Value ? "checked" : "") />
+                    <input type="checkbox" id="PictureDisc" name="PictureDisc" class="form-check-input" @(Model.PictureDisc ? "checked" : "") />
                     <label for="PictureDisc" class="form-check-label">Picture Disc</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Boxset -->
+        <div class="row mb-3">
+            <div class="col">
+                <div class="form-check">
+                    <!-- Hidden field to ensure a value is submitted when checkbox is unchecked -->
+                    <input type="hidden" name="Boxset" value="false" />
+                    <input type="checkbox" id="Boxset" name="Boxset" class="form-check-input" @(Model.Boxset ? "checked" : "") />
+                    <label for="Boxset" class="form-check-label">Boxset</label>
                 </div>
             </div>
         </div>
@@ -142,7 +154,7 @@
                 <div class="form-check">
                     <!-- Hidden field to ensure a value is submitted when checkbox is unchecked -->
                     <input type="hidden" name="LimitedEdition" value="false" />
-                    <input type="checkbox" id="LimitedEdition" name="LimitedEdition" class="form-check-input" @(Model.LimitedEdition.HasValue && Model.LimitedEdition.Value ? "checked" : "") />
+                    <input type="checkbox" id="LimitedEdition" name="LimitedEdition" class="form-check-input" @(Model.LimitedEdition ? "checked" : "") />
                     <label for="LimitedEdition" class="form-check-label">Limited Edition</label>
                 </div>
             </div>
@@ -153,18 +165,6 @@
             <div class="col">
                 <label for="LimitedEditioNo">Limited Edition Number</label>
                 <input type="text" id="LimitedEditioNo" name="LimitedEditioNo" class="form-control" value="@Model.LimitedEditioNo" />
-            </div>
-        </div>
-
-        <!-- Boxset -->
-        <div class="row mb-3">
-            <div class="col">
-                <div class="form-check">
-                    <!-- Hidden field to ensure a value is submitted when checkbox is unchecked -->
-                    <input type="hidden" name="Boxset" value="false" />
-                    <input type="checkbox" id="Boxset" name="Boxset" class="form-check-input" @(Model.Boxset.HasValue && Model.Boxset.Value ? "checked" : "") />
-                    <label for="Boxset" class="form-check-label">Boxset</label>
-                </div>
             </div>
         </div>
 

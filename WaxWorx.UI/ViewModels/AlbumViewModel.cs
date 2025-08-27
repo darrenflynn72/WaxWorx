@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 
 namespace WaxWorx.UI.ViewModels
@@ -18,16 +19,26 @@ namespace WaxWorx.UI.ViewModels
         public int? NoOfDiscs { get; set; }
         public DateTime? DatePurchased { get; set; }
         public string? Color { get; set; }
-        public bool? PictureDisc { get; set; }
-        public bool? LimitedEdition { get; set; }
+        public bool PictureDisc { get; set; } = false;
+        public bool Boxset { get; set; }
+        public bool LimitedEdition { get; set; }
         public string? LimitedEditioNo { get; set; }
-        public bool? Boxset { get; set; }
         public string? Notes { get; set; }
+
 
         [Required(ErrorMessage = "Artist is required")]
         public ArtistViewModel Artist { get; set; } // Nested ViewModel
 
         [Required(ErrorMessage = "Genre is required")]
         public GenreViewModel Genre { get; set; } // Nested ViewModel
+
+        [Required(ErrorMessage = "Condition is required")]
+        public ConditionViewModel Condition { get; set; } // Nested ViewModel
+
+
+        // for dropdowns
+        public IEnumerable<SelectListItem> ArtistOptions { get; set; } = new List<SelectListItem>(); //TODO: populate
+        public IEnumerable<SelectListItem> GenreOptions { get; set; } = new List<SelectListItem>(); //TODO: populate
+        public IEnumerable<SelectListItem> ConditionOptions { get; set; } = new List<SelectListItem>(); //TODO: populate
     }
 }

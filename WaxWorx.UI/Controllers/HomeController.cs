@@ -197,10 +197,10 @@ namespace WaxWorx.Controllers
                     NoOfDiscs = a.NoOfDiscs,
                     DatePurchased = a.DatePurchased,
                     Color = a.Color,
-                    PictureDisc = a.PictureDisc,
-                    LimitedEdition = a.LimitedEdition,
+                    PictureDisc = a.PictureDisc ?? false,
+                    Boxset = a.Boxset ?? false,
+                    LimitedEdition = a.LimitedEdition ?? false,
                     LimitedEditioNo = a.LimitedEditioNo,
-                    Boxset = a.Boxset,
                     Notes = a.Notes
                 })
                 .ToList();
@@ -287,9 +287,9 @@ namespace WaxWorx.Controllers
                     DatePurchased = albumViewModel.DatePurchased,
                     Color = albumViewModel.Color,
                     PictureDisc = albumViewModel.PictureDisc,
-                    LimitedEdition = albumViewModel.LimitedEdition,
-                    LimitedEditioNo = albumViewModel.LimitedEditioNo,
                     Boxset = albumViewModel.Boxset,
+                    LimitedEdition = albumViewModel.LimitedEdition,
+                    LimitedEditioNo = albumViewModel.LimitedEditioNo, 
                     Notes = albumViewModel.Notes,
                     // Set audit fields
                     CreatedBy = "MyName",
@@ -353,10 +353,10 @@ namespace WaxWorx.Controllers
                 NoOfDiscs = album.NoOfDiscs,
                 DatePurchased = album.DatePurchased,
                 Color = album.Color,
-                PictureDisc = album.PictureDisc,
-                LimitedEdition = album.LimitedEdition,
+                PictureDisc = album.PictureDisc ?? false,
+                Boxset = album.Boxset ?? false,
+                LimitedEdition = album.LimitedEdition ?? false,
                 LimitedEditioNo = album.LimitedEditioNo,
-                Boxset = album.Boxset,
                 Notes = album.Notes,
 
                 // Manually set ArtistId and GenreId from nested ViewModels
@@ -398,9 +398,9 @@ namespace WaxWorx.Controllers
                 existingAlbum.DatePurchased = albumViewModel.DatePurchased;
                 existingAlbum.Color = albumViewModel.Color;
                 existingAlbum.PictureDisc = albumViewModel.PictureDisc;
+                existingAlbum.Boxset = albumViewModel.Boxset;
                 existingAlbum.LimitedEdition = albumViewModel.LimitedEdition;
                 existingAlbum.LimitedEditioNo = albumViewModel.LimitedEditioNo;
-                existingAlbum.Boxset = albumViewModel.Boxset;
                 existingAlbum.Notes = albumViewModel.Notes;
 
                 // Check if a new image file is uploaded
