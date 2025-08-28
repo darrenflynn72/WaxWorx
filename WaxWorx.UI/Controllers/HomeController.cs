@@ -50,8 +50,8 @@ namespace WaxWorx.Controllers
                 TotalArtists = _context.Artists.Count(),
                 TotalGenres = _context.Genres.Count(),
                 ConditionScore = CalculateConditionScore(), // or set a static value
-                RecentAlbums = DummyRecentAlbums() // Safe default
-                //RecentAlbums = GetRecentAlbums()
+                //RecentAlbums = DummyRecentAlbums() // Safe default
+                RecentAlbums = GetRecentAlbums()
             };
 
             return View(tempView);
@@ -115,11 +115,11 @@ namespace WaxWorx.Controllers
 
         private List<AlbumSummary> GetRecentAlbums()
         {
-            int topRecentAlbumCount = 5;
+            int topRecentAlbumCount = 7;
 
             return _context.Albums
                 .Include(a => a.Artist) // if you need Artist.Name
-                .OrderByDescending(a => a.CreatedDate)
+                .OrderByDescending(a => a.DatePurchased) // .CreatedDate)
                 .Take(topRecentAlbumCount)
                 .Select(a => new AlbumSummary
                 {
@@ -822,7 +822,7 @@ namespace WaxWorx.Controllers
 
             var result = Json(artistOptions);
 
-            return Json(result);
+            return result;
         }
 
         // Genre Dropdown Options Endpoint

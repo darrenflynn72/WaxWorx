@@ -33,8 +33,7 @@ namespace WaxWorx.UI.Controllers
              _coverArtApiClient = coverArtApiClient;
         }
 
-
-        // Main page with options
+        // Main page (Recent Albums Section))
         public IActionResult Index()
         {
             var tempView = new DashboardViewModel
@@ -54,11 +53,7 @@ namespace WaxWorx.UI.Controllers
 
             // Get CDN Image path
             var data = await _coverArtApiClient.GetFrontCoverArtUrlAsync(mbid);
-
-            // Get Image byte array
-            //var data = await _coverArtApiClient.GetFrontCoverArtAsync(mbid);
-
-
+             
             return Ok("TEST");
         }      
     }

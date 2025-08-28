@@ -76,12 +76,11 @@
         <div class="col-md-8">
             <h4 class="text-info">Collection Stats</h4>
             <div id="chart_container" style="width: 100%; height: 500px;"></div>
-        </div>        
+        </div>
 
         <!-- Recently Added -->
         <div class="col-md-4">
             <h4 class="text-info">Recently Added</h4>
-
             <div class="card card-bg-chart text-light border-secondary">
                 <div class="card-body p-0">
                     @if (Model.RecentAlbums != null && Model.RecentAlbums.Any())
@@ -91,7 +90,11 @@
                             {
                                 <li class="list-group-item list-bg-chart text-light d-flex align-items-center border-secondary">
                                     <div class="me-3 p-1 border border-info rounded">
-                                        <img src="@album.CoverUrl"
+                                        @{
+                                            // if album has no CDN URL, then use our default album cover art
+                                            var imageUrl = !string.IsNullOrEmpty(album.CoverUrl) ? album.CoverUrl : "/images/CoverArtDefault.png";
+                                        }
+                                        <img src="@imageUrl"
                                              alt="@album.Title"
                                              class="d-block"
                                              style="width:80px; height:80px;" />

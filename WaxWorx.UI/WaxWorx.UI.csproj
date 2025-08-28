@@ -34,6 +34,7 @@
     <ItemGroup>
       <Folder Include="Logs\" />
       <Folder Include="ViewModels\New\" />
+      <Folder Include="wwwroot\Images\" />
     </ItemGroup>
 
 </Project>
